@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0,minimum-scale=1.0">
+    <title>测试页面</title>
+</head>
+<body>
+<h1>Spring MVC + Thymeleaf Hello World example</h1>
+<p th:text="${message}"></p>
+<table border="1" cellspacing="0" cellpadding="0">
+    <tr>
+        <th>no</th>
+        <th>studentId</th>
+        <th>studentName</th>
+        <th>age</th>
+    </tr>
+    <tr th:each="list,stat : ${studentList}">
+        <td th:text="${stat.count}"></td>
+        <td th:text="${list.studentId}"></td>
+        <td th:text="${list.studentName}"></td>
+        <td th:text="${list.age}"></td>
+    </tr>
+</table>
+</body>
+</html>

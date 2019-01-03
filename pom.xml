@@ -49,6 +49,12 @@
             <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
 
+        <!-- 添加thymeleaf模版引擎 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
         <!-- JDBC 驱动 -->
         <dependency>
             <groupId>mysql</groupId>
