@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta charset="utf-8"/>
+    <title>行查信息录入</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"-->
+    <!--integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/registration.css"/>
+    <!-- 引用jquery -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <script src="js/jquery.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"-->
+    <!--integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"-->
+    <!--crossorigin="anonymous"></script>-->
+    <script src="js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="mainContainer">
+    <form action="#">
+        <div class="form-group">
+            <div class="text-center">
+                <h2>行查信息录入</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-offset-3 col-sm-6">
+                <label for="flightNumber" class="control-label">航班选择：</label>
+                <div class="">
+                    <input type="text" class="form-control" id="flightNumber" placeholder="请选择航班">
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-offset-3 col-sm-6">
+            <label for="inPlaceTime" class="control-label">行李车发车时间：</label>
+            <div class="row" id="inPlaceTime">
+                <div class="col-sm-3">
+                    <input type="number" id="hour" class="form-control" placeholder="时">
+                </div>
+                <div class="col-sm-1">
+                    <p style="font-size: 2.5rem">：</p>
+                </div>
+                <div class="col-sm-3">
+                    <input type="number" id="minute" class="form-control" placeholder="分">
+                </div>
+                <div class="col-sm-1">
+                    <p style="font-size: 2.5rem">：</p>
+                </div>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" placeholder="秒">
+                </div>
+            </div>
+        </div>
+        <div class="form-group col-sm-offset-3 col-sm-6">
+            <label for="usedTime" class="control-label">传送带到位时间：</label>
+            <div class="row" id="usedTime">
+                <div class="col-sm-3">
+                    <input type="number" id="useHour" class="form-control" placeholder="时">
+                </div>
+                <div class="col-sm-1">
+                    <p style="font-size: 2.5rem">：</p>
+                </div>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" placeholder="分">
+                </div>
+                <div class="col-sm-1">
+                    <p style="font-size: 2.5rem">：</p>
+                </div>
+                <div class="col-sm-3">
+                    <input type="number" class="form-control" placeholder="秒">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-offset-3 col-sm-6">
+                <label for="specialCircumstances" class="control-label">特殊情况说明：</label>
+                <div class="">
+                    <textarea class="form-control" rows="3" id="specialCircumstances"></textarea>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-offset-3 col-sm-2">
+                <button type="button" class="btn btn-lg btn-danger btn-block">全部清空</button>
+            </div>
+            <div class="col-sm-offset-2 col-sm-2">
+                <button type="submit" class="btn btn-lg btn-success btn-block">上传</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

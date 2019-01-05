@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: url(../images/login_bg.jpg) #f8f6e9;
+}
+
+.mainContainer {
+    border-radius: 1em;
+    width: 80%;
+    margin: auto;
+    /*height: 380px;*/
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: #000;
+    /*width:50%;*/
+    /*height: 50%;*/
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.4); /* IE9、标准浏览器、IE6和部分IE7内核的浏览器(如QQ浏览器)会读懂 */
+}
+
+.mainContainer .form-group {
+    margin-bottom: 1.5rem;
+}
+
+.mainContainer div img {
+    max-width: 30% !important;
+    max-height: 10% !important;
+    margin: auto;
+}
+
+.mainContainer .image-div {
+    margin-top: 0.5rem;
+}
+
+@media \0screen\,screen\9 {
+    /* 只支持IE6、7、8 */
+    .mainContainer {
+        background-color: #000000;
+        filter: Alpha(opacity=50);
+        position: static; /* IE6、7、8只能设置position:static(默认属性) ，否则会导致子元素继承Alpha值 */
+        *zoom: 1; /* 激活IE6、7的haslayout属性，让它读懂Alpha */
+    }
+
+}
+
+form {
+    color: seashell;
+}
+
+.blackBorder {
+    border: 1px solid black;
+}
+
+.redBorder {
+    border: 1px solid red;
+}

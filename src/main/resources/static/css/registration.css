@@ -1,0 +1,12 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: url(../images/login_bg.jpg) #f8f6e9;
+}
+
+.mainContainer {
+    color: seashell;
+}
