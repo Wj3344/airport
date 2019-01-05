@@ -59,4 +59,18 @@ public interface AdminMapper {
      */
     @Select("select identity from admin where username =#{username}")
     int queryIdentity(String username);
+
+    /**
+     * 根据用户名查询用户信息
+     *
+     * @param username 用户名
+     * @return 用户详细信息
+     */
+    @Select("select * from admin where username = #{username} limit 1")
+    @Results(id = "admin", value = {
+            @Result(property = "username", column = "username", javaType = String.class),
+            @Result(property = "password", column = "password", javaType = String.class),
+            @Result(property = "identity", column = "identity", javaType = Integer.class)
+    })
+    Admin queryAdmin(String username);
 }

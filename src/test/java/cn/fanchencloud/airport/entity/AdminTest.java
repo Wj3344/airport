@@ -1,7 +1,7 @@
 package cn.fanchencloud.airport.entity;
 
 import cn.fanchencloud.airport.service.AdminService;
-import cn.fanchencloud.airport.utils.EncryptUtil;
+import cn.fanchencloud.airport.utils.MD5Utils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +22,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class AdminTest {
 
     private AdminService adminService;
-    private EncryptUtil encryptUtil;
 
     @Test
     public void addAdmin() {
-        String password = encryptUtil.encryptBASE64("123456");
+        String password = MD5Utils.encrypt("123456");
         for (int i = 0; i < 13; i++) {
             Admin admin = new Admin("fanchen" + i, password, i);
             int add = adminService.add(admin);
@@ -39,14 +38,9 @@ public class AdminTest {
         }
     }
 
-
     @Autowired
     public void setAdminService(AdminService adminService) {
         this.adminService = adminService;
     }
 
-    @Autowired
-    public void setEncryptUtil(EncryptUtil encryptUtil) {
-        this.encryptUtil = encryptUtil;
-    }
 }
