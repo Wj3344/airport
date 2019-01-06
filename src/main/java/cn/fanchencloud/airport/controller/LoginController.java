@@ -1,6 +1,7 @@
 package cn.fanchencloud.airport.controller;
 
 import cn.fanchencloud.airport.entity.Admin;
+import cn.fanchencloud.airport.entity.ErrorMessage;
 import cn.fanchencloud.airport.entity.ResponseMessage;
 import cn.fanchencloud.airport.utils.MD5Utils;
 import org.apache.shiro.SecurityUtils;
@@ -62,6 +63,17 @@ public class LoginController {
         Admin admin = (Admin) SecurityUtils.getSubject().getPrincipal();
         model.addAttribute("admin", admin);
         return "index";
+    }
+
+    @RequestMapping(value = "/errorPage")
+    public String errorPage(Model model){
+        System.out.println("进入error控制器");
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTitle("暂无权限");
+        errorMessage.setHead("您没有权限进行该操作");
+        errorMessage.setMessage("<a href=\"/index\">返回</a>");
+        model.addAttribute("errorMessage", errorMessage);
+        return "errorPage";
     }
 
 }

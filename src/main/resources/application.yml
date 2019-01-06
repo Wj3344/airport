@@ -60,9 +60,20 @@ spring:
     mode: HTML5
     servlet:
       content-type: text/html
+    # 关闭thymeleaf页面缓存
+    cache: false
 # 开启日志
 debug: true
 # 日志记录级别
 logging:
   level:
-    root: DEBUG
+    # root日志以WARN级别输出
+    root: warn
+    cn:
+      fanchencloud:
+        airport: debug
+    # 去掉 CONDITIONS EVALUATION REPORT
+    org:
+      springframework:
+        boot:
+          autoconfigure: error

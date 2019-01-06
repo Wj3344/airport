@@ -2,6 +2,7 @@ package cn.fanchencloud.airport.controller;
 
 import cn.fanchencloud.airport.entity.Student;
 import cn.fanchencloud.airport.service.StudentService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,11 +29,13 @@ public class StudentController {
      * @param studentId 学生学号
      * @return 学生信息
      */
+    @RequiresPermissions("student:query")
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     public Student queryStudentBySno(int studentId) {
         return this.studentService.queryStudentByStudentId(studentId);
     }
 
+    @RequiresPermissions("student:add")
     @PostMapping(value = "/add")
     public String addStudent(Student student) {
         int add = studentService.add(student);
