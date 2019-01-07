@@ -91,9 +91,11 @@
             <div class="form-group col-sm-5">
                 <label for="important" class="control-label">重点旅客标记：</label>
                 <div id="important">
-                    <label class="checkbox-inline" th:each="passengerTag:${passengerTags}">
+                    <label class="checkbox-inline" style="margin-left: 0;margin-right: 10px;"
+                           th:each="passengerTag,iterStat:${passengerTags}">
                         <input type="checkbox" th:id="|passengerTag${passengerTag.id}|" th:value="${passengerTag.id}">
                         <span>[[${passengerTag.describe}]]</span>
+                        <br th:with="isEven=(${iterStat.count} % 5 ==0)">
                     </label>
                 </div>
             </div>
