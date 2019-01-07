@@ -286,11 +286,11 @@ create table if not exists `airport`.`flightInformation_passengerTag`
   `tagId`    int not null comment '标签id',
   key (`id`),
   primary key (`flightId`, `tagId`),
-  CONSTRAINT `flightInformation_passengerTag_1` FOREIGN KEY (`flightId`) REFERENCES `flightInformation` (`id`),
-  CONSTRAINT `flightInformation_passengerTag_2` FOREIGN KEY (`tagId`) REFERENCES `passengerTag` (`id`)
-) COMMENT '航班信息和旅客标记联系表'
-  ENGINE = InnoDB
-  DEFAULT CHARSET = utf8;
+  constraint `flightInformation_passengerTag_1` FOREIGN KEY (`flightId`) REFERENCES `flightInformation` (`id`),
+  constraint `flightInformation_passengerTag_2` FOREIGN KEY (`tagId`) REFERENCES `passengerTag` (`id`)
+) comment '航班信息和旅客标记联系表'
+  engine = InnoDB
+  default charset = utf8;
 
 # 创建特殊航班标记表
 create table if not exists `airport`.`specialFlight`

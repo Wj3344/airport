@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class TestController {
     /**
      * 值机信息录入
+     *
      * @return 值机信息录入
      */
     @RequestMapping("/checkIn")
@@ -28,16 +29,8 @@ public class TestController {
     }
 
     /**
-     * 次日航班信息录入
-     * @return 次日航班信息录入
-     */
-    @RequestMapping("/registration")
-    public String registration() {
-        return "registration";
-    }
-
-    /**
      * 清洁
+     *
      * @return 清洁
      */
     @RequestMapping("/clean")
@@ -47,6 +40,7 @@ public class TestController {
 
     /**
      * 货运信息录入
+     *
      * @return 货运信息录入
      */
     @RequestMapping("/freight")
@@ -56,6 +50,7 @@ public class TestController {
 
     /**
      * 行查信息录入
+     *
      * @return 行查信息录入
      */
     @RequestMapping("/baggage")
@@ -65,6 +60,7 @@ public class TestController {
 
     /**
      * 综合服务信息录入
+     *
      * @return 综合服务信息录入
      */
     @RequestMapping("/integratedService")
@@ -74,13 +70,13 @@ public class TestController {
 
     /**
      * 站坪车辆信息录入
+     *
      * @return 站坪车辆信息录入
      */
     @RequestMapping("/standCar")
     public String standCar() {
         return "standCar";
     }
-
 
 
     @ResponseBody

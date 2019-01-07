@@ -7,7 +7,7 @@ import java.io.Serializable;
  * User: chen
  * Date: 19-1-7
  * Time: 下午3:07
- * Description: 特殊团队标记标签
+ * Description: 特殊航班标记标签
  *
  * @author chen
  */
