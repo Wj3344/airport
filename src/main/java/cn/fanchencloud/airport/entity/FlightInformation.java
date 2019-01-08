@@ -53,6 +53,8 @@ public class FlightInformation implements Serializable {
     private Date time;
 
     public FlightInformation() {
+        // 默认为创建时间
+        this.time = new Date();
     }
 
     @Override

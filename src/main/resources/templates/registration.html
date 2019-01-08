@@ -25,7 +25,7 @@
 </head>
 <body>
 <div class="mainContainer">
-    <form th:action="@{/registration/add}" method="post" onsubmit="return checkMessage()">
+    <form th:action="@{/registration/add}" method="post" id="myForm" onsubmit="return checkMessage()">
         <div class="form-group">
             <div class="text-center">
                 <h2>次日航班信息录入</h2>
@@ -76,7 +76,7 @@
                     <label class="checkbox-inline" style="margin-left: 0;margin-right: 10px;"
                            th:each="specialFlightTag,iterStat:${specialFlightTags}">
                         <input type="checkbox" name="specialFlightTag"
-                               th:id="|specialFlightTag${specialFlightTag.id}|" th:value="${specialFlightTag.id}">
+                               th:id="|specialFlightTag${specialFlightTag.id}|" th:value=${specialFlightTag.id}>
                         <span>[[${specialFlightTag.describe}]]</span>
                         <br th:with="isEven=(${iterStat.count} % 5 ==0)">
                     </label>
@@ -96,7 +96,7 @@
                     <label class="checkbox-inline" style="margin-left: 0;margin-right: 10px;"
                            th:each="passengerTag,iterStat:${passengerTags}">
                         <input type="checkbox" name="passengerTag" th:id="|passengerTag${passengerTag.id}|"
-                               th:value="${passengerTag.id}">
+                               th:value=${passengerTag.id}>
                         <span>[[${passengerTag.describe}]]</span>
                         <br th:with="isEven=(${iterStat.count} % 5 ==0)">
                     </label>
@@ -120,6 +120,7 @@
                 <button type="submit" class="btn btn-lg btn-success btn-block">上传</button>
             </div>
         </div>
+        <div id="myTag"></div>
     </form>
 </div>
 </body>
@@ -151,13 +152,15 @@
         console.log("机号" + planeNumber);
         var dtp_input1 = $("#dtp_input1").val();
         console.log("登机时间" + dtp_input1);
-        if (!isNull(dtp_input1)){
+        if (!isNull(dtp_input1)) {
             console.log("时间为空");
             alert("请填写登机时间！");
             $("#dtp_input1")[0].focus();
             return false;
         }
+        var boardingTime = new Date(dtp_input1).getTime();
 
+        console.log(boardingTime);
 
         var gatePosition = $("#gatePosition").val();
         console.log("停机位" + gatePosition);
@@ -180,13 +183,13 @@
         });
         checkStr = specialFlightTagCheckValue.join(',');//将数组元素连接起来以构建一个字符串  
         console.log(checkStr);
-        var registration = {};
+        var registration = {}, $node;
         // 航班号
         registration.flightNumber = flightNumber;
         // 机号
         registration.planeNumber = planeNumber;
         // 登机时间
-        registration.boardingTime = dtp_input1;
+        registration.boardingTime = boardingTime;
         // 停机位
         registration.gatePosition = gatePosition;
         // 始发站
@@ -199,8 +202,16 @@
         registration.specialTags = specialFlightTagCheckValue;
         // 重点旅客标记
         registration.passengerTags = passengerTagCheckValue;
-
-        console.log("组装的对象" + JSON.stringify(registration));
-        return false;
+        var message = JSON.stringify(registration);
+        // message = message.replace(/"/g, "\\\"");
+        // message = message.replace(/"([^"]*)"/g, "'$1'");
+        console.log("组装的对象 ： " + message);
+        var myTag = $("#myTag");
+        myTag.empty();
+        // 将数据埋进表单
+        $node = '<input type="text" name="registration" id="registration" value=' + message + ' hidden="hidden">';
+        //新表单项添加到td中
+        myTag.append($node);
+        return true;
     };
 </script>
