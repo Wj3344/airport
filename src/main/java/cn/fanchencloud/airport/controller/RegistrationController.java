@@ -45,6 +45,7 @@ public class RegistrationController {
         logger.info("接收到的航班添加信息：" + registration);
         Registration parseObject = JSON.parseObject(registration, Registration.class);
         logger.info("转换成Java对象： " + parseObject.toString());
+
         return registration;
     }
 

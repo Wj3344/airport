@@ -159,7 +159,6 @@
             return false;
         }
         var boardingTime = new Date(dtp_input1).getTime();
-
         console.log(boardingTime);
 
         var gatePosition = $("#gatePosition").val();
@@ -203,8 +202,6 @@
         // 重点旅客标记
         registration.passengerTags = passengerTagCheckValue;
         var message = JSON.stringify(registration);
-        // message = message.replace(/"/g, "\\\"");
-        // message = message.replace(/"([^"]*)"/g, "'$1'");
         console.log("组装的对象 ： " + message);
         var myTag = $("#myTag");
         myTag.empty();
