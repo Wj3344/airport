@@ -25,7 +25,7 @@
 </head>
 <body>
 <div class="mainContainer">
-    <form th:action="@{/registration/add}" method="post">
+    <form th:action="@{/registration/add}" method="post" onsubmit="return checkMessage()">
         <div class="form-group">
             <div class="text-center">
                 <h2>次日航班信息录入</h2>
@@ -35,13 +35,13 @@
             <div class="form-group col-sm-offset-1 col-sm-5">
                 <label for="flightNumber" class="control-label">航班号：</label>
                 <div class="">
-                    <input type="text" class="form-control" id="flightNumber" placeholder="请输入航班号">
+                    <input type="text" class="form-control" id="flightNumber" placeholder="请输入航班号" required>
                 </div>
             </div>
             <div class="form-group col-sm-5">
                 <label for="destination" class="control-label">目的地：</label>
                 <div>
-                    <input type="text" class="form-control" id="destination" placeholder="请输入目的地">
+                    <input type="text" class="form-control" id="destination" placeholder="请输入目的地" required>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
             <div class="form-group col-sm-offset-1 col-sm-5">
                 <label for="planeNumber" class="control-label">机号：</label>
                 <div class="">
-                    <input type="text" class="form-control" id="planeNumber" placeholder="请输入机号">
+                    <input type="text" class="form-control" id="planeNumber" placeholder="请输入机号" required>
                 </div>
             </div>
             <div class="form-group col-sm-5">
@@ -60,23 +60,25 @@
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                 </div>
-                <input type="hidden" id="dtp_input1" value="" readonly/><br/>
+                <input type="hidden" id="dtp_input1" value="" readonly required/><br/>
             </div>
         </div>
         <div class="row">
             <div class="form-group col-sm-offset-1 col-sm-5">
                 <label for="gatePosition" class="control-label">停机位：</label>
                 <div class="">
-                    <input type="text" class="form-control" id="gatePosition" placeholder="请输入停机位">
+                    <input type="text" class="form-control" id="gatePosition" placeholder="请输入停机位" required>
                 </div>
             </div>
             <div class="form-group col-sm-5">
                 <label for="specialFlight" class="control-label">特殊航班：</label>
                 <div id="specialFlight">
-                    <label class="checkbox-inline" th:each="specialFlightTag:${specialFlightTags}">
-                        <input type="checkbox" th:id="|specialFlightTag${specialFlightTag.id}|"
-                               value="${specialFlightTag.id}">
+                    <label class="checkbox-inline" style="margin-left: 0;margin-right: 10px;"
+                           th:each="specialFlightTag,iterStat:${specialFlightTags}">
+                        <input type="checkbox" name="specialFlightTag"
+                               th:id="|specialFlightTag${specialFlightTag.id}|" th:value="${specialFlightTag.id}">
                         <span>[[${specialFlightTag.describe}]]</span>
+                        <br th:with="isEven=(${iterStat.count} % 5 ==0)">
                     </label>
                 </div>
             </div>
@@ -93,7 +95,8 @@
                 <div id="important">
                     <label class="checkbox-inline" style="margin-left: 0;margin-right: 10px;"
                            th:each="passengerTag,iterStat:${passengerTags}">
-                        <input type="checkbox" th:id="|passengerTag${passengerTag.id}|" th:value="${passengerTag.id}">
+                        <input type="checkbox" name="passengerTag" th:id="|passengerTag${passengerTag.id}|"
+                               th:value="${passengerTag.id}">
                         <span>[[${passengerTag.describe}]]</span>
                         <br th:with="isEven=(${iterStat.count} % 5 ==0)">
                     </label>
@@ -114,7 +117,7 @@
                 <button type="reset" class="btn btn-lg btn-danger btn-block">全部清空</button>
             </div>
             <div class="col-sm-offset-3 col-sm-2">
-                <button type="button" onclick="checkMessage()" class="btn btn-lg btn-success btn-block">上传</button>
+                <button type="submit" class="btn btn-lg btn-success btn-block">上传</button>
             </div>
         </div>
     </form>
@@ -133,8 +136,71 @@
         minuteStep: 1
     });
 
+    var isNull = function (obj) {
+        return obj;
+    };
+
     var checkMessage = function () {
         // 获取各个输入的值
+        console.log("执行检查函数");
+        var flightNumber = $("#flightNumber").val();
+        console.log("航班号" + flightNumber);
+        var destination = $("#destination").val();
+        console.log("目的地" + destination);
+        var planeNumber = $("#planeNumber").val();
+        console.log("机号" + planeNumber);
+        var dtp_input1 = $("#dtp_input1").val();
+        console.log("登机时间" + dtp_input1);
+        if (!isNull(dtp_input1)){
+            console.log("时间为空");
+            alert("请填写登机时间！");
+            $("#dtp_input1")[0].focus();
+            return false;
+        }
 
+
+        var gatePosition = $("#gatePosition").val();
+        console.log("停机位" + gatePosition);
+        var airportOfDeparture = $("#airportOfDeparture").val();
+        console.log("始发站" + airportOfDeparture);
+        var specialCircumstances = $("#specialCircumstances").val();
+        console.log("特殊情况说明" + specialCircumstances);
+
+        // 重点旅客标记
+        var passengerTagCheckValue = [];
+        $('input[name="passengerTag"]:checked').each(function () {
+            passengerTagCheckValue.push($(this).val());//向数组中添加元素  
+        });
+        var checkStr = passengerTagCheckValue.join(',');//将数组元素连接起来以构建一个字符串  
+        console.log(checkStr);
+        // 特殊航班标记
+        var specialFlightTagCheckValue = [];
+        $('input[name="specialFlightTag"]:checked').each(function () {
+            specialFlightTagCheckValue.push($(this).val());//向数组中添加元素  
+        });
+        checkStr = specialFlightTagCheckValue.join(',');//将数组元素连接起来以构建一个字符串  
+        console.log(checkStr);
+        var registration = {};
+        // 航班号
+        registration.flightNumber = flightNumber;
+        // 机号
+        registration.planeNumber = planeNumber;
+        // 登机时间
+        registration.boardingTime = dtp_input1;
+        // 停机位
+        registration.gatePosition = gatePosition;
+        // 始发站
+        registration.departureStation = airportOfDeparture;
+        // 目的地
+        registration.destination = destination;
+        // 特殊情况说明
+        registration.special = specialCircumstances;
+        // 特殊航班标记
+        registration.specialTags = specialFlightTagCheckValue;
+        // 重点旅客标记
+        registration.passengerTags = passengerTagCheckValue;
+
+        console.log("组装的对象" + JSON.stringify(registration));
+        return false;
     };
 </script>

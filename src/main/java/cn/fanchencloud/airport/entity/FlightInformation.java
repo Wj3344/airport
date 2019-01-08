@@ -44,6 +44,10 @@ public class FlightInformation implements Serializable {
      */
     private String destination;
     /**
+     * 特殊情况说明
+     */
+    private String special;
+    /**
      * 记录添加时间
      */
     private Date time;
@@ -61,6 +65,7 @@ public class FlightInformation implements Serializable {
                 ", gatePosition='" + gatePosition + '\'' +
                 ", departureStation='" + departureStation + '\'' +
                 ", destination='" + destination + '\'' +
+                ", special='" + special + '\'' +
                 ", time=" + time +
                 '}';
     }
@@ -131,5 +136,13 @@ public class FlightInformation implements Serializable {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public String getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(String special) {
+        this.special = special;
     }
 }
