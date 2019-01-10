@@ -26,6 +26,13 @@ public class Registration extends FlightInformation {
      */
     private List<Integer> specialTags;
 
+    public Registration() {
+    }
+
+    public Registration(FlightInformation flightInformation) {
+        super(flightInformation);
+    }
+
     @Override
     public String toString() {
         return "Registration{" +

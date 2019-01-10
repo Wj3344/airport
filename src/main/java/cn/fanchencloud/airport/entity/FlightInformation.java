@@ -57,6 +57,16 @@ public class FlightInformation implements Serializable {
         this.time = new Date();
     }
 
+    public FlightInformation(FlightInformation flightInformation) {
+        this.flightNumber = flightInformation.getFlightNumber();
+        this.planeNumber = flightInformation.getPlaneNumber();
+        this.boardingTime = flightInformation.getBoardingTime();
+        this.gatePosition = flightInformation.getGatePosition();
+        this.departureStation = flightInformation.getDepartureStation();
+        this.destination = flightInformation.getDestination();
+        this.special = flightInformation.getSpecial();
+    }
+
     @Override
     public String toString() {
         return "FlightInformation{" +
