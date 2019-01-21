@@ -21,7 +21,7 @@ import java.util.List;
 @Component
 public interface FlightInformationMapper {
     /**
-     * 添加一条破航班记录
+     * 添加一条航班记录
      *
      * @param flightInformation 航班记录信息
      * @return 添加结果
@@ -49,4 +49,14 @@ public interface FlightInformationMapper {
      */
     @Select("SELECT LAST_INSERT_ID();")
     int getLastId();
+
+    /**
+     * 查询一日之内的航班记录
+     *
+     * @return 查询记录
+     */
+    @Select("select id, flightNumber, planeNumber, boardingTime, gatePosition, departureStation, destination, time, special\n" +
+            "from flightInformation\n" +
+            "where to_days(now()) - to_days(time) <= 2;")
+    List<FlightInformation> queryDataWithinOneDay();
 }
