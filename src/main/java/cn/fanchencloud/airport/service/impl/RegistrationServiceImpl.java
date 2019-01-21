@@ -88,7 +88,6 @@ public class RegistrationServiceImpl implements RegistrationService {
             // 添加航班记录的特殊旅客标记失败，抛出异常
             throw new MyAddException("添加航班记录的特殊旅客标记失败！");
         }
-
         logger.info("添加航班记录的特殊航班标记" + registration.getSpecialTags().toString());
         i = flightInformationSpecialFlightMapper.addMany(flightId, registration.getSpecialTags());
         if (i == 0) {

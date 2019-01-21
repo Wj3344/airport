@@ -1,11 +1,14 @@
+@charset "UTF-8";
+
 * {
     margin: 0;
     padding: 0;
-    overflow: hidden;
 }
 
 body {
+    /* 设置背景图片 */
     background: url(../images/login_bg.jpg) #f8f6e9;
+    overflow: hidden;
 }
 
 .mainContainer {

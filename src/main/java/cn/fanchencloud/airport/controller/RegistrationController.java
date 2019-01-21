@@ -45,9 +45,14 @@ public class RegistrationController {
         logger.info("接收到的航班添加信息：" + registration);
         Registration parseObject = JSON.parseObject(registration, Registration.class);
         logger.info("转换成Java对象： " + parseObject.toString());
-        registrationService.saveRegistration(parseObject);
-        // 添加成功
-        return registration;
+        int saveRegistration = registrationService.saveRegistration(parseObject);
+        if (saveRegistration == 0) {
+            // 保存记录失败
+            return "添加记录失败！";
+        } else {
+            // 添加成功
+            return registration;
+        }
     }
 
     /**
