@@ -8,7 +8,7 @@ import java.util.Date;
  * User: chen
  * Date: 19-1-7
  * Time: 下午3:16
- * Description:
+ * Description: 货运信息实体类
  *
  * @author chen
  */
