@@ -68,7 +68,6 @@ public class BaggageController {
     }
 
     @Autowired
-
     public void setBaggageService(BaggageService baggageService) {
         this.baggageService = baggageService;
     }

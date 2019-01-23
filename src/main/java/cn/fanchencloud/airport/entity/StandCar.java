@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author chen
  */
-public class Stand implements Serializable {
+public class StandCar implements Serializable {
 
     private static final long serialVersionUID = -6544185977530374104L;
     /**
@@ -45,7 +45,7 @@ public class Stand implements Serializable {
      */
     private Date createTime;
 
-    public Stand() {
+    public StandCar() {
     }
 
     @Override
