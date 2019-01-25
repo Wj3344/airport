@@ -171,7 +171,7 @@ public class ExcelUtils {
         // 日期	航班号	机号	停机位	始发站	目的地	登机时间	重点旅客	重点航班
         String[] array = {"日期", "航班号", "机号", "停机位", "始发站", "目的地", "登机时间", "重点旅客", "重点航班"};
         HSSFRow second = sheet2.createRow(0);
-        HSSFCell hssfCell = null;
+        HSSFCell hssfCell;
         for (int i = 0; i < array.length; i++) {
             hssfCell = second.createCell(i);
             hssfCell.setCellStyle(style);

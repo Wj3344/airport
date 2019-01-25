@@ -37,19 +37,19 @@ public class LoginController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
-    public ResponseMessage login(String username, String password) {
+    public String login(String username, String password) {
         //对密码进行加密
         password = MD5Utils.encrypt(password);
         UsernamePasswordToken token = new UsernamePasswordToken(username, password);
         Subject subject = SecurityUtils.getSubject();
         try {
             subject.login(token);
-            return ResponseMessage.ok();
+            // 跳转到首页
+            return "index";
         } catch (UnknownAccountException | LockedAccountException | IncorrectCredentialsException e) {
-            return ResponseMessage.error(e.getMessage());
+            return "login";
         } catch (AuthenticationException e) {
-            return ResponseMessage.error("认证失败！");
+            return "login";
         }
     }
 
@@ -58,15 +58,18 @@ public class LoginController {
         return "redirect:/index";
     }
 
+    @RequestMapping("/index_back")
+    public String index_back() {
+        return "index_back";
+    }
+
     @RequestMapping("/index")
-    public String index(Model model) {
-        Admin admin = (Admin) SecurityUtils.getSubject().getPrincipal();
-        model.addAttribute("admin", admin);
+    public String index() {
         return "index";
     }
 
     @RequestMapping(value = "/errorPage")
-    public String errorPage(Model model){
+    public String errorPage(Model model) {
         System.out.println("进入error控制器");
         ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setTitle("暂无权限");

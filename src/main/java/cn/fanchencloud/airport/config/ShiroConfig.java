@@ -33,7 +33,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
         //登录的url
         shiroFilterFactoryBean.setLoginUrl("/login");
-        //登录成功跳转的yrl
+        //登录成功跳转的url
         shiroFilterFactoryBean.setSuccessUrl("/index");
         //未授权的url
         shiroFilterFactoryBean.setUnauthorizedUrl("/403");
