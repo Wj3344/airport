@@ -4,6 +4,7 @@ import cn.fanchencloud.airport.entity.FlightInformation;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -59,4 +60,34 @@ public interface FlightInformationMapper {
             "from flightInformation\n" +
             "where to_days(now()) - to_days(time) <= 2;")
     List<FlightInformation> queryDataWithinOneDay();
+
+    /**
+     * 获取所有的次日航班信息记录
+     *
+     * @return 记录列表
+     */
+    @Select("select id, flightNumber, planeNumber, boardingTime, gatePosition, departureStation, destination, time, special\n" +
+            "from flightInformation order by time desc")
+    List<FlightInformation> getAll();
+
+    /**
+     * 通过记录id查询记录信息
+     *
+     * @param id 记录id'
+     * @return 记录信息
+     */
+    @Select("select id, flightNumber, planeNumber, boardingTime, gatePosition, departureStation, destination, time, special\n" +
+            "from flightInformation where id = #{id}")
+    FlightInformation queryById(int id);
+
+    /**
+     * 更新一条航班信息记录
+     *
+     * @param flightInformation 航班信息
+     * @return 更新影响的记录条数
+     */
+    @Update("update flightInformation set flightNumber = #{flightNumber}, planeNumber = #{planeNumber}, boardingTime = #{boardingTime}, " +
+            "gatePosition = #{gatePosition}, departureStation = #{departureStation}, destination = #{destination}, time = #{time}, " +
+            "special = #{special} where id = #{id}")
+    int updateRecord(FlightInformation flightInformation);
 }

@@ -33,6 +33,15 @@ public interface PassengerTagMapper {
     List<PassengerTag> findAll();
 
     /**
+     * 根据航班记录id查询标签列表
+     *
+     * @param id 航班记录id
+     * @return 标签记录id
+     */
+    @Select("select `id` from passengerTag where id in (select tagId from flightInformation_passengerTag where flightId = #{id});")
+    List<Integer> findByFlightInformationId(int id);
+
+    /**
      * 根据标签id查询标签信息
      *
      * @param id 标签id

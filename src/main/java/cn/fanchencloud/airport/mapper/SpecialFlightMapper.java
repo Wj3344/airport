@@ -33,6 +33,15 @@ public interface SpecialFlightMapper {
     List<SpecialFlight> findAll();
 
     /**
+     * 根据航班记录id查询标签列表
+     *
+     * @param id 航班记录id
+     * @return 标签记录id
+     */
+    @Select("select `id` from specialFlight where id in (select specialFlight from flightInformation_specialFlight where flightId = #{id});")
+    List<Integer> findByFlightInformationId(int id);
+
+    /**
      * 根据标签id查询标签信息
      *
      * @param id 标签id

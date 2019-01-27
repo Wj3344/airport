@@ -7,12 +7,14 @@ import cn.fanchencloud.airport.exception.MyAddException;
 import cn.fanchencloud.airport.mapper.*;
 import cn.fanchencloud.airport.model.Registration;
 import cn.fanchencloud.airport.service.RegistrationService;
+import cn.fanchencloud.airport.utils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,6 +97,61 @@ public class RegistrationServiceImpl implements RegistrationService {
             throw new MyAddException("添加航班记录的特殊航班标记失败！");
         }
         return i;
+    }
+
+    @Override
+    public List<FlightInformation> getAllRegistration() {
+        return flightInformationMapper.getAll();
+    }
+
+    @Override
+    public Registration getRegistrationById(int id) {
+        // 通过id查询航班信息
+        FlightInformation flightInformation = flightInformationMapper.queryById(id);
+        // 通过航班记录id查询特殊航班标签列表
+        List<Integer> specialFlightList = specialFlightMapper.findByFlightInformationId(id);
+        List<Integer> passengerTagList = passengerTagMapper.findByFlightInformationId(id);
+        Registration registration = new Registration();
+        try {
+            BeanUtils.fatherToChild(flightInformation, registration);
+        } catch (Exception e) {
+            logger.debug("类型转换失败！" + e.getMessage());
+            e.printStackTrace();
+        }
+        registration.setSpecialTags(specialFlightList);
+        registration.setPassengerTags(passengerTagList);
+        return registration;
+    }
+
+    @Override
+    @Transactional(rollbackFor = MyAddException.class)
+    public boolean updateRegistration(Registration registrationModify) {
+        boolean flag = true;
+        // 修改航班记录
+        int i = flightInformationMapper.updateRecord(registrationModify);
+        if (i == 0) {
+            // 修改航班记录失败，抛出异常
+            flag = false;
+            throw new MyAddException("修改航班信息失败");
+        }
+        // 添加两个标签的记录
+        logger.info("修改航班记录的特殊旅客标记 " + registrationModify.getPassengerTags().toString());
+        // 先删除之前保存的标签
+        flightInformationPassengerTagMapper.deleteByFlightId(registrationModify.getId());
+        flightInformationSpecialFlightMapper.deleteByFlightId(registrationModify.getId());
+        i = flightInformationPassengerTagMapper.addMany(registrationModify.getId(), registrationModify.getPassengerTags());
+        if (i == 0 && registrationModify.getPassengerTags().size() != 0) {
+            // 添加航班记录的特殊旅客标记失败，抛出异常
+            flag = false;
+            throw new MyAddException("添加航班记录的特殊旅客标记失败！");
+        }
+        i = flightInformationSpecialFlightMapper.addMany(registrationModify.getId(), registrationModify.getSpecialTags());
+        if (i == 0 && registrationModify.getSpecialTags().size() != 0) {
+            // 添加航班记录的特殊航班标记失败，抛出异常
+            flag = false;
+            throw new MyAddException("添加航班记录的特殊航班标记失败！");
+        }
+        return flag;
     }
 
     @Autowired

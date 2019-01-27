@@ -1,5 +1,6 @@
 package cn.fanchencloud.airport.service;
 
+import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.entity.PassengerTag;
 import cn.fanchencloud.airport.entity.SpecialFlight;
 import cn.fanchencloud.airport.model.Registration;
@@ -39,4 +40,26 @@ public interface RegistrationService {
      */
     int saveRegistration(Registration registration);
 
+    /**
+     * 获取所以的次日航班信息数据
+     *
+     * @return 数据列表
+     */
+    List<FlightInformation> getAllRegistration();
+
+    /**
+     * 获取次日航班登记信息
+     *
+     * @param id 航班记录id
+     * @return 航班登记信息
+     */
+    Registration getRegistrationById(int id);
+
+    /**
+     * 将一条次日航班修改记录进行处理
+     *
+     * @param registrationModify 次日航班修改后的数据
+     * @return 处理结果
+     */
+    boolean updateRegistration(Registration registrationModify);
 }
