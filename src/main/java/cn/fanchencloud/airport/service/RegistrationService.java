@@ -38,7 +38,7 @@ public interface RegistrationService {
      * @param registration 航班信息记录
      * @return 保存结果
      */
-    int saveRegistration(Registration registration);
+    boolean saveRegistration(Registration registration);
 
     /**
      * 获取所以的次日航班信息数据

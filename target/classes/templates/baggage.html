@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta charset="utf-8"/>
+    <title>行查信息录入</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"-->
+    <!--integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/registration.css}"/>
+    <!-- 引用jquery -->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+    <script th:src="@{/js/jquery.min.js}"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"-->
+    <!--integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"-->
+    <!--crossorigin="anonymous"></script>-->
+    <script th:src="@{/js/bootstrap.min.js}"></script>
+    <!-- 引入bootstrap 时间组件 -->
+    <link rel="stylesheet" media="screen" th:href="@{/css/bootstrap-datetimepicker.min.css}"/>
+    <script th:src="@{/js/bootstrap-datetimepicker.min.js}" type="text/javascript"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap-datetimepicker.zh-CN.js}"></script>
+</head>
+<body>
+<div class="mainContainer">
+    <form th:action="@{/baggage/add}" method="post" onsubmit="return checkSubmit()">
+        <div class="form-group">
+            <div class="text-center">
+                <h2>行查信息录入</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-offset-3 col-sm-6">
+                <label for="flightNumber" class="control-label">航班选择：</label>
+                <select class="form-control" id="flightNumber" name="flightInformationId">
+                    <option th:each="flightInformation:${flightInformationList}" th:value="${flightInformation.id}"
+                            th:text="${flightInformation.flightNumber}">测试数据
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-offset-3 col-sm-6">
+                <label for="inPlaceTime" class="control-label">行李车发车时间：</label>
+                <div class="input-group date form_datetime "
+                     data-date-format="yyyy年MMdd日 - HH:ii p" data-link-field="inPlaceTime">
+                    <input class="form-control" size="16" type="text" value="" placeholder="请选择行李车发车时间" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                </div>
+                <input type="hidden" id="inPlaceTime" name="arrivedTime" readonly required/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-offset-3 col-sm-6">
+                <label for="usedTime" class="control-label">传送带到位时间：</label>
+                <div class="input-group date form_datetime "
+                     data-date-format="yyyy年MMdd日 - HH:ii p" data-link-field="usedTime">
+                    <input class="form-control" size="16" type="text" value="" placeholder="请选择传送带到位时间" readonly>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                </div>
+                <input type="hidden" id="usedTime" name="readyTime" readonly required/><br/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-offset-3 col-sm-6">
+                <label for="specialCircumstances" class="control-label">特殊情况说明：</label>
+                <div class="">
+                    <textarea class="form-control" name="specialCase" rows="3" id="specialCircumstances"></textarea>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-sm-offset-3 col-sm-2">
+                <button type="reset" class="btn btn-lg btn-danger btn-block">全部清空</button>
+            </div>
+            <div class="col-sm-offset-2 col-sm-2">
+                <button type="submit" class="btn btn-lg btn-success btn-block">上传</button>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    <!-- 时间组件初始化 -->
+    $('.form_datetime').datetimepicker({
+        weekStart: 0, //一周从哪一天开始
+        todayBtn: 1, //
+        autoclose: 1,
+        language: 'zh-CN',
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1,
+        minuteStep: 1
+    });
+
+    var checkSubmit = function () {
+        // 行李车发车时间
+        var inPlaceTime = $("#inPlaceTime").val();
+        if (inPlaceTime === "") {
+            alert("请填写行李车发车时间！");
+            return false;
+        }
+        console.log("行李车发车时间：" + inPlaceTime);
+        var usedTime = $("#usedTime").val();
+        if (usedTime === "") {
+            alert("请填写传送带到位时间！");
+            return false;
+        }
+        console.log("传送带到位时间：" + usedTime);
+        // 将时间转换成时间戳
+        var dateTime = new Date(inPlaceTime).getTime();
+        console.log("时间戳1：" + dateTime);
+        // 重新赋值
+        $("#inPlaceTime").attr("value", dateTime);
+        dateTime = new Date(usedTime).getTime();
+        console.log("时间戳1：" + dateTime);
+        $("#usedTime").attr("value", dateTime);
+        return true;
+    };
+
+
+</script>

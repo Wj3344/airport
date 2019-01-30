@@ -50,7 +50,7 @@ public class RegistrationController {
             return ResponseWrapper.markCustom(false, 400, "添加数据不能为空！", null);
         }
         logger.info("转换成Java对象： " + parseObject.toString());
-        boolean updateRegistration = registrationService.updateRegistration(parseObject);
+        boolean updateRegistration = registrationService.saveRegistration(parseObject);
         if (updateRegistration) {
             // 添加成功
             return ResponseWrapper.markCustom(true, 200, "修改记录成功", null);
@@ -126,7 +126,13 @@ public class RegistrationController {
         }
         // 将数据提交给服务层处理
         boolean modify = registrationService.updateRegistration(registrationModify);
-        return null;
+        if (modify) {
+            // 数据修改成功
+            return ResponseWrapper.markCustom(false, 200, "修改数据成功！", null);
+        } else {
+            // 数据修改失败
+            return ResponseWrapper.markCustom(false, 400, "修改数据失败！", null);
+        }
     }
 
     private Registration objectJsonToRegistration(String jsonObject) {

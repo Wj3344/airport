@@ -73,7 +73,7 @@ public class RegistrationServiceImpl implements RegistrationService {
      */
     @Override
     @Transactional(rollbackFor = MyAddException.class)
-    public int saveRegistration(Registration registration) {
+    public boolean saveRegistration(Registration registration) {
         // 添加航班记录
         FlightInformation flightInformation = new FlightInformation(registration);
         int i = flightInformationMapper.addOne(flightInformation);
@@ -96,7 +96,7 @@ public class RegistrationServiceImpl implements RegistrationService {
             // 添加航班记录的特殊航班标记失败，抛出异常
             throw new MyAddException("添加航班记录的特殊航班标记失败！");
         }
-        return i;
+        return true;
     }
 
     @Override
