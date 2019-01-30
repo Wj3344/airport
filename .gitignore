@@ -26,3 +26,6 @@ hs_err_pid*
 /.settings/
 /.project
 /.classpath
+将删除 target/generated-sources/
+将删除 target/generated-test-sources/
+/target/
