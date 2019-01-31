@@ -250,17 +250,24 @@
             url: "/registration/modify",
             dataType: 'json',
             data: {
-                "registration": message
+                "dataMessage": message
             },
-            success: function (data) {
+            // ajax请求成功，并不代表数据处理成功，还需要判断处理
+            success: function (response) {
                 //实际操作的时候，返回的json对象中可能会有成功错误的判断标记，所以可能也需要判断一下
-                // console.log("返回的数据: " + data);
-                alert("记录添加成功,现在返回！");
-                // 数据修改成功，重新跳转回查询界面
-                window.location.href = "/registration/search";
+                console.log("返回的数据: " + response.data);
+                if (response.status === 200) {
+                    // 请求成功
+                    alert("记录添加成功,现在返回！");
+                    // 数据修改成功，重新跳转回查询界面
+                    window.location.href = "/registration/search";
+                } else {
+                    alert("修改失败，请稍后重试！");
+                }
+
             },
             error: function (xhr) {
-                console.log("错误提示： " + xhr.status + " " + xhr.statusText);
+                console.log("错误提示： " + xhr + " ---- " + xhr.status + " " + xhr.statusText);
             },
             //请求完成后回调函数 (请求成功或失败之后均调用)。参数： XMLHttpRequest 对象和一个描述成功请求类型的字符串
             complete: function (XMLHttpRequest, textStatus) {

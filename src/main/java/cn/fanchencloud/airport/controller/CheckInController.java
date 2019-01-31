@@ -3,6 +3,7 @@ package cn.fanchencloud.airport.controller;
 import cn.fanchencloud.airport.entity.Baggage;
 import cn.fanchencloud.airport.entity.CheckIn;
 import cn.fanchencloud.airport.entity.FlightInformation;
+import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.BaggageService;
 import cn.fanchencloud.airport.service.CheckInService;
 import cn.fanchencloud.airport.service.FlightInformationService;
@@ -41,6 +42,12 @@ public class CheckInController {
     private CheckInService checkInService;
 
 
+    /**
+     * 请求到添加值机信息的页面
+     *
+     * @param model 模型
+     * @return 页面跳转
+     */
     @GetMapping(value = "/add")
     public String addBaggage(Model model) {
         List<FlightInformation> flightInformationList = flightInformationService.queryDataWithinOneDay();
@@ -50,14 +57,14 @@ public class CheckInController {
 
     @ResponseBody
     @PostMapping(value = "/add")
-    public String addBaggage(CheckIn checkIn) {
+    public JsonResponse addBaggage(CheckIn checkIn) {
         System.out.println(checkIn.toString());
         // 将传输上来的信息存储到数据库中
         boolean insertRecord = checkInService.insertRecord(checkIn);
         if (insertRecord) {
-            return "OK";
+            return JsonResponse.ok();
         } else {
-            return "ERROR";
+            return JsonResponse.errorMsg("添加记录失败");
         }
     }
 

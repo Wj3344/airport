@@ -3,10 +3,12 @@ package cn.fanchencloud.airport.controller;
 import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.entity.PassengerTag;
 import cn.fanchencloud.airport.entity.SpecialFlight;
+import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.model.Registration;
 import cn.fanchencloud.airport.model.ResponseWrapper;
 import cn.fanchencloud.airport.service.RegistrationService;
 import com.alibaba.fastjson.JSON;
+import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,20 +45,20 @@ public class RegistrationController {
      */
     @ResponseBody
     @PostMapping(value = "/add")
-    public ResponseWrapper addRegistration(String registration) {
+    public JsonResponse addRegistration(String registration) {
         logger.info("接收到的航班添加信息：" + registration);
         Registration parseObject = objectJsonToRegistration(registration);
         if (parseObject == null) {
-            return ResponseWrapper.markCustom(false, 400, "添加数据不能为空！", null);
+            return JsonResponse.errorMsg("添加数据不能为空!");
         }
         logger.info("转换成Java对象： " + parseObject.toString());
         boolean updateRegistration = registrationService.saveRegistration(parseObject);
         if (updateRegistration) {
             // 添加成功
-            return ResponseWrapper.markCustom(true, 200, "修改记录成功", null);
+            return JsonResponse.ok();
         } else {
             // 保存记录失败
-            return ResponseWrapper.markCustom(false, 500, "修改记录失败", null);
+            return JsonResponse.errorMsg("添加记录失败");
         }
     }
 
@@ -117,21 +119,21 @@ public class RegistrationController {
      * @return 处理结果
      */
     @PostMapping("/modify")
-    public ResponseWrapper modifyRegistration(String dataMessage) {
-        System.out.println(dataMessage);
+    @ResponseBody
+    public JsonResponse modifyRegistration(String dataMessage) {
         logger.info("接收到的修改后的航班信息：" + dataMessage);
         Registration registrationModify = objectJsonToRegistration(dataMessage);
         if (registrationModify == null) {
-            return ResponseWrapper.markCustom(false, 400, "添加数据不能为空！", null);
+            return JsonResponse.errorMsg("添加的数据不能为空");
         }
         // 将数据提交给服务层处理
         boolean modify = registrationService.updateRegistration(registrationModify);
         if (modify) {
             // 数据修改成功
-            return ResponseWrapper.markCustom(false, 200, "修改数据成功！", null);
+            return JsonResponse.ok();
         } else {
             // 数据修改失败
-            return ResponseWrapper.markCustom(false, 400, "修改数据失败！", null);
+            return JsonResponse.errorMsg("修改数据失败！");
         }
     }
 

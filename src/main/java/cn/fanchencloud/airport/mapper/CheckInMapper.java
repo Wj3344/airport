@@ -47,4 +47,5 @@ public interface CheckInMapper {
     @Update("update checkIn set flightInformationId = #{flightInformationId},realNumber = #{realNumber}," +
             "luggageNumber  = #{luggageNumber},specialCase = #{specialCase} where id = #{id}")
     int updateRecord(CheckIn checkIn);
+
 }
