@@ -46,8 +46,6 @@ public class LoginController {
             subject.login(token);
             // 跳转到首页
             return "index";
-        } catch (UnknownAccountException | LockedAccountException | IncorrectCredentialsException e) {
-            return "login";
         } catch (AuthenticationException e) {
             return "login";
         }

@@ -1,11 +1,10 @@
 package cn.fanchencloud.airport.mapper;
 
 import cn.fanchencloud.airport.entity.CheckIn;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * Created by handsome programmer.
@@ -47,5 +46,13 @@ public interface CheckInMapper {
     @Update("update checkIn set flightInformationId = #{flightInformationId},realNumber = #{realNumber}," +
             "luggageNumber  = #{luggageNumber},specialCase = #{specialCase} where id = #{id}")
     int updateRecord(CheckIn checkIn);
+
+    /**
+     * 查询两天内的数据记录
+     *
+     * @return 查询结果
+     */
+    @Select("select id, flightInformationId, realNumber, luggageNumber, specialCase, createTime from checkIn where createTime >= DATE_SUB(NOW(),INTERVAL 2 DAY);")
+    List<CheckIn> getCheckInByTimeInTwoDays();
 
 }

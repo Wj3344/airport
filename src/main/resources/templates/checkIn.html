@@ -73,13 +73,24 @@
                 <button type="reset" class="btn btn-lg btn-danger btn-block">全部清空</button>
             </div>
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="submit" id="check-btn" onclick="checkSubmit()" class="btn btn-lg btn-success btn-block">上传</button>
+                <button type="submit" id="check-btn" onclick="checkSubmit()" class="btn btn-lg btn-success btn-block">
+                    上传
+                </button>
             </div>
         </div>
     </form>
 </div>
 </body>
 <script type="text/javascript" th:inline="javascript">
+    // 页面加载完成后触发
+    $(function () {
+        // 检查下拉列表是否为空
+        var selectTest = $("#flightNumber").children();
+        if (selectTest.length === 0) {
+            alert("暂时没有航班信息，或者所有航班都已添加信息，请到值机信息查询列表查看！");
+        }
+    });
+
     var checkSubmit = function () {
         console.log("执行查询函数");
         $("#check-btn").attr("disabled", "disabled");
@@ -92,7 +103,7 @@
             data: {
                 "flightInformationId": $('#flightNumber option:selected').val(),
                 "realNumber": $("#peopleNumber").val(),
-                "luggageNumber":  $("#baggageNumber").val(),
+                "luggageNumber": $("#baggageNumber").val(),
                 "specialCase": $("#specialCircumstances").val()
             },
             success: function (response) {
