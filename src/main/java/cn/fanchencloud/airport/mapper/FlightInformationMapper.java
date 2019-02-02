@@ -1,13 +1,11 @@
 package cn.fanchencloud.airport.mapper;
 
 import cn.fanchencloud.airport.entity.FlightInformation;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -90,4 +88,21 @@ public interface FlightInformationMapper {
             "gatePosition = #{gatePosition}, departureStation = #{departureStation}, destination = #{destination}, time = #{time}, " +
             "special = #{special} where id = #{id}")
     int updateRecord(FlightInformation flightInformation);
+
+    /**
+     * 根据航班id集合查询航班号码
+     *
+     * @param records 航班记录id集合
+     * @return 查询结果
+     */
+    @Select({
+            "<script>",
+            "select id,flightNumber from flightInformation where id = ",
+            "<foreach collection='records' item='item' index='index' separator=','>",
+            "(#{item})",
+            "</foreach>",
+            "</script>"
+    })
+    @MapKey("id")
+    Map<Integer, String> queryFlightNumberWithId(@Param("records") List<Integer> records);
 }

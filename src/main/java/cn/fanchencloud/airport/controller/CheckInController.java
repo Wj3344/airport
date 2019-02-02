@@ -3,6 +3,7 @@ package cn.fanchencloud.airport.controller;
 import cn.fanchencloud.airport.entity.Baggage;
 import cn.fanchencloud.airport.entity.CheckIn;
 import cn.fanchencloud.airport.entity.FlightInformation;
+import cn.fanchencloud.airport.model.CheckInRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.BaggageService;
 import cn.fanchencloud.airport.service.CheckInService;
@@ -10,10 +11,7 @@ import cn.fanchencloud.airport.service.FlightInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -30,6 +28,11 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/checkIn")
 public class CheckInController {
+
+    /**
+     * 最近的记录天数限制
+     */
+    private int currentDays = 7;
 
     /**
      * 注入航班信息服务层
@@ -66,6 +69,26 @@ public class CheckInController {
         } else {
             return JsonResponse.errorMsg("添加记录失败");
         }
+    }
+
+    /**
+     * 请求跳转到值机信息查询页面
+     *
+     * @param model 模型
+     * @return 页面数据填充跳转
+     */
+    @GetMapping(value = "/search")
+    public String searchPage(Model model) {
+        // 获取最近的值机记录添加到模型中
+        List<CheckInRecord> checkInRecordList = checkInService.getCurrentRecords(currentDays);
+        model.addAttribute("checkInRecordList", checkInRecordList);
+        return "checkInSearch";
+    }
+
+    @GetMapping(value = "/modify/{id}")
+    public String modifyPage(Model model, @PathVariable("id") int id) {
+        CheckInRecord checkInRecord = checkInService.getCheckInRecordById(id);
+        return "checkInModify";
     }
 
     @Autowired

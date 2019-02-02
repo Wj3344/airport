@@ -39,17 +39,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr th:each="flightInformation,iterStat:${flightInformationList}">
+            <tr th:each="checkInRecord,iterStat:${checkInRecordList}">
                 <td th:text="${iterStat.index}">序号</td>
-                <td th:text="${flightInformation.flightNumber}">航班号</td>
-                <td th:text="${flightInformation.planeNumber}">机号</td>
-                <td th:text="${flightInformation.gatePosition}">停机位</td>
-                <td th:text="${flightInformation.departureStation}">始发站</td>
-                <td th:text="${flightInformation.destination}">目的地</td>
-                <td th:text="${#dates.format(flightInformation.boardingTime, 'yyyy/MM/dd HH:mm')}">登机时间</td>
-                <td th:text="${flightInformation.special}">特殊情况说明</td>
+                <td th:text="${checkInRecord.flightNumber}">航班号</td>
+                <td th:text="${checkInRecord.realNumber}">实际人数</td>
+                <td th:text="${checkInRecord.luggageNumber}">实际行李件数</td>
+                <td th:text="${checkInRecord.specialCase}">特殊情况说明</td>
                 <td>
-                    <a class="btn btn-info btn-sm" th:href="@{'/registration/modify/' + ${flightInformation.id}}"
+                    <a class="btn btn-info btn-sm" th:href="@{'/checkIn/modify/' + ${checkInRecord.id}}"
                        role="button">修改</a>
                 </td>
             </tr>

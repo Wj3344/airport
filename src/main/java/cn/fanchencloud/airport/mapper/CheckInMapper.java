@@ -55,4 +55,12 @@ public interface CheckInMapper {
     @Select("select id, flightInformationId, realNumber, luggageNumber, specialCase, createTime from checkIn where createTime >= DATE_SUB(NOW(),INTERVAL 2 DAY);")
     List<CheckIn> getCheckInByTimeInTwoDays();
 
+    /**
+     * 查询最近的值机信息记录
+     * @param currentDays 时间限制
+     * @return 查询结果
+     */
+    @Select("select id, flightInformationId, realNumber, luggageNumber, specialCase, createTime from checkIn where createTime >= DATE_SUB(NOW(),INTERVAL #{currentDays} DAY);")
+    List<CheckIn> getCurrentRecords(int currentDays);
 }
+

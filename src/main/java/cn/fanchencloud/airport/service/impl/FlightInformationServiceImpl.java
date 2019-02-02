@@ -55,6 +55,16 @@ public class FlightInformationServiceImpl implements FlightInformationService {
         return flightInformations;
     }
 
+    @Override
+    public Map<Integer, String> queryFlightNumberWithId(List<Integer> ids) {
+        Map<Integer, String> map = new HashMap<>(ids.size());
+        for (Integer id : ids) {
+            FlightInformation flightInformation = flightInformationMapper.queryById(id);
+            map.put(id, flightInformation.getFlightNumber());
+        }
+        return map;
+    }
+
     @Autowired
     public void setFlightInformationMapper(FlightInformationMapper flightInformationMapper) {
         this.flightInformationMapper = flightInformationMapper;
