@@ -29,4 +29,12 @@ public interface FlightInformationService {
      * @return 查询结果
      */
     Map<Integer, String> queryFlightNumberWithId(List<Integer> ids);
+
+    /**
+     * 根据记录id查询记录详情
+     *
+     * @param id 记录id
+     * @return 查询结果
+     */
+    FlightInformation getRecordById(int id);
 }

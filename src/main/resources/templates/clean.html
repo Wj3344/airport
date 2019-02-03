@@ -26,7 +26,7 @@
 </head>
 <body>
 <div class="mainContainer">
-    <form method="post" th:action="@{/clean/add}" onsubmit="return checkSubmit()">
+    <form>
         <div class="form-group">
             <div class="text-center">
                 <h2>清洁信息录入</h2>
@@ -59,7 +59,8 @@
                 <label for="usedTime">清洁用时：</label>
                 <div class="input-group">
                     <input type="number" id="usedTime" name="usedTime" class="form-control" placeholder="请输入清洁用时，单位（分钟）"
-                           aria-describedby="basic-addon2" required>
+                           aria-describedby="basic-addon2" required
+                           onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
                     <span class="input-group-addon" id="basic-addon2">分钟</span>
                 </div>
             </div>
@@ -68,7 +69,8 @@
             <div class="form-group col-sm-offset-3 col-sm-6">
                 <label for="specialCircumstances" class="control-label">特殊情况说明：</label>
                 <div class="">
-                    <textarea class="form-control" name="specialCase" rows="3" id="specialCircumstances"></textarea>
+                    <textarea class="form-control" style="resize: none" name="specialCase" rows="3"
+                              id="specialCircumstances"></textarea>
                 </div>
             </div>
         </div>
@@ -78,12 +80,16 @@
                 <button type="reset" class="btn btn-lg btn-danger btn-block">全部清空</button>
             </div>
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="submit" class="btn btn-lg btn-success btn-block">上传</button>
+                <button type="button" onclick="cleanPageCheckSubmit()" id="check-btn"
+                        class="btn btn-lg btn-success btn-block">
+                    上传
+                </button>
             </div>
         </div>
     </form>
 </div>
 </body>
+<script th:src="@{/js/httpRequest.js}" type="text/javascript"></script>
 </html>
 <script type="text/javascript">
     <!-- 时间组件初始化 -->
@@ -98,16 +104,4 @@
         showMeridian: 1,
         minuteStep: 1
     });
-
-    var checkSubmit = function () {
-        var inPlace = $("#inPlace").val();
-        if (inPlace === "") {
-            alert("请填写到位时间！");
-            return false;
-        }
-        // 将时间转换长时间戳
-        var dateTime = new Date(inPlace).getTime();
-        // 将时间戳重新赋值给输入框
-        $("#inPlace").attr("value", dateTime);
-    };
 </script>

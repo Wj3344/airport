@@ -48,7 +48,7 @@ public class JsonResponse {
     }
 
     public static JsonResponse ok() {
-        return new JsonResponse(null);
+        return new JsonResponse(200, "操作成功！", null);
     }
 
     public static JsonResponse errorMsg(String msg) {

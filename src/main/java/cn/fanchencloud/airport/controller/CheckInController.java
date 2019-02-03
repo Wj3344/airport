@@ -1,19 +1,19 @@
 package cn.fanchencloud.airport.controller;
 
-import cn.fanchencloud.airport.entity.Baggage;
 import cn.fanchencloud.airport.entity.CheckIn;
 import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.model.CheckInRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
-import cn.fanchencloud.airport.service.BaggageService;
 import cn.fanchencloud.airport.service.CheckInService;
 import cn.fanchencloud.airport.service.FlightInformationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,8 +29,10 @@ import java.util.List;
 @RequestMapping(value = "/checkIn")
 public class CheckInController {
 
+    private static Logger logger = LoggerFactory.getLogger(CheckInController.class);
+
     /**
-     * 最近的记录天数限制
+     * 最近的记录天数限制,
      */
     private int currentDays = 7;
 
@@ -88,7 +90,25 @@ public class CheckInController {
     @GetMapping(value = "/modify/{id}")
     public String modifyPage(Model model, @PathVariable("id") int id) {
         CheckInRecord checkInRecord = checkInService.getCheckInRecordById(id);
+        model.addAttribute("checkInRecord", checkInRecord);
         return "checkInModify";
+    }
+
+    /**
+     * 请求修改一条值机信息记录
+     *
+     * @param checkIn 值机信息记录
+     * @return 修改结果
+     */
+    @PostMapping(value = "/modify")
+    @ResponseBody
+    public JsonResponse modifyCheckIn(CheckIn checkIn) {
+        logger.info(checkIn.toString());
+        if (checkInService.updateRecord(checkIn)) {
+            return JsonResponse.ok();
+        } else {
+            return JsonResponse.errorMsg("修改失败");
+        }
     }
 
     @Autowired

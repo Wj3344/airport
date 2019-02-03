@@ -24,7 +24,7 @@ public interface CheckInService {
     boolean insertRecord(CheckIn checkIn);
 
     /**
-     * 获取最近currenrDays的值机信息记录
+     * 获取最近currentDays的值机信息记录
      *
      * @param currentDays 时间限制
      * @return 查询列表
@@ -38,4 +38,11 @@ public interface CheckInService {
      * @return 查询结果
      */
     CheckInRecord getCheckInRecordById(int id);
+
+    /**
+     * 更新修改一条值机信息记录
+     * @param checkIn 值机信息记录
+     * @return 更新结果
+     */
+    boolean updateRecord(CheckIn checkIn);
 }

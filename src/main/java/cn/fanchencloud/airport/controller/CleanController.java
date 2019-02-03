@@ -3,9 +3,12 @@ package cn.fanchencloud.airport.controller;
 import cn.fanchencloud.airport.entity.Baggage;
 import cn.fanchencloud.airport.entity.Clean;
 import cn.fanchencloud.airport.entity.FlightInformation;
+import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.BaggageService;
 import cn.fanchencloud.airport.service.CleanService;
 import cn.fanchencloud.airport.service.FlightInformationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,6 +32,11 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/clean")
 public class CleanController {
+
+    /**
+     * 日志记录器
+     */
+    private static Logger logger = LoggerFactory.getLogger(CleanController.class);
 
     /**
      * 注入航班信息服务层
@@ -56,28 +64,30 @@ public class CleanController {
     /**
      * 处理请求添加一条清洁记录
      *
-     * @param flightInformationId 航班id
-     * @param readTime            到位时间
-     * @param usedTime            清洁用时
-     * @param specialCase         特殊情况说明
-     * @return 添加结果返回
+     * @param clean 添加信息
+     * @return 添加结果
      */
     @ResponseBody
     @PostMapping(value = "/add")
-    public String addClean(int flightInformationId, String readTime, int usedTime, String specialCase) {
-        // 将数据封装成对象
-        Clean clean = new Clean();
-        clean.setFlightInformationId(flightInformationId);
-        clean.setReadTime(new Date(Long.parseLong(readTime)));
-        clean.setUsedTime(usedTime);
-        clean.setSpecialCase(specialCase);
+    public JsonResponse addClean(Clean clean) {
         // 将传输上来的信息存储到数据库中
         boolean insertRecord = cleanService.addRecord(clean);
         if (insertRecord) {
-            return "OK";
+            return JsonResponse.ok();
         } else {
-            return "ERROR";
+            return JsonResponse.errorMsg("添加失败");
         }
+    }
+
+    /**
+     * 请求跳转到清洁列表页面
+     *
+     * @param model 模型
+     * @return 页面跳转
+     */
+    @GetMapping(value = "/list")
+    public String listClean(Model model) {
+        return "cleanList";
     }
 
     @Autowired

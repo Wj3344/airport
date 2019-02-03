@@ -43,7 +43,7 @@ public interface CheckInMapper {
      * @param checkIn 值机信息记录
      * @return 更新记录结果
      */
-    @Update("update checkIn set flightInformationId = #{flightInformationId},realNumber = #{realNumber}," +
+    @Update("update checkIn set realNumber = #{realNumber}," +
             "luggageNumber  = #{luggageNumber},specialCase = #{specialCase} where id = #{id}")
     int updateRecord(CheckIn checkIn);
 
@@ -57,10 +57,20 @@ public interface CheckInMapper {
 
     /**
      * 查询最近的值机信息记录
+     *
      * @param currentDays 时间限制
      * @return 查询结果
      */
     @Select("select id, flightInformationId, realNumber, luggageNumber, specialCase, createTime from checkIn where createTime >= DATE_SUB(NOW(),INTERVAL #{currentDays} DAY);")
     List<CheckIn> getCurrentRecords(int currentDays);
+
+    /**
+     * 根据id获取值机信息记录
+     *
+     * @param id id
+     * @return 查询结果
+     */
+    @Select("select id, flightInformationId, realNumber, luggageNumber, specialCase, createTime from checkIn where id = #{id} ")
+    CheckIn getRecordById(int id);
 }
 

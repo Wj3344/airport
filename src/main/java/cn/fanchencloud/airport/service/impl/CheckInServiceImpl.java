@@ -1,6 +1,7 @@
 package cn.fanchencloud.airport.service.impl;
 
 import cn.fanchencloud.airport.entity.CheckIn;
+import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.mapper.CheckInMapper;
 import cn.fanchencloud.airport.model.CheckInRecord;
 import cn.fanchencloud.airport.service.CheckInService;
@@ -74,7 +75,22 @@ public class CheckInServiceImpl implements CheckInService {
 
     @Override
     public CheckInRecord getCheckInRecordById(int id) {
-        return null;
+        CheckIn checkIn = checkInMapper.getRecordById(id);
+        CheckInRecord checkInRecord = new CheckInRecord();
+        try {
+            BeanUtils.fatherToChild(checkIn, checkInRecord);
+        } catch (Exception e) {
+            logger.error("类型转换出错，getCheckInRecordById");
+            e.printStackTrace();
+        }
+        FlightInformation flightInformation = flightInformationService.getRecordById(checkInRecord.getFlightInformationId());
+        checkInRecord.setFlightNumber(flightInformation.getFlightNumber());
+        return checkInRecord;
+    }
+
+    @Override
+    public boolean updateRecord(CheckIn checkIn) {
+        return checkInMapper.updateRecord(checkIn) != 0;
     }
 
     @Autowired

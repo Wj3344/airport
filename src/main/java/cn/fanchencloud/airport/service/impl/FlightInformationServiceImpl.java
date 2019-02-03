@@ -65,6 +65,11 @@ public class FlightInformationServiceImpl implements FlightInformationService {
         return map;
     }
 
+    @Override
+    public FlightInformation getRecordById(int id) {
+        return flightInformationMapper.queryById(id);
+    }
+
     @Autowired
     public void setFlightInformationMapper(FlightInformationMapper flightInformationMapper) {
         this.flightInformationMapper = flightInformationMapper;

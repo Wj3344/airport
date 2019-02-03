@@ -77,3 +77,6 @@ logging:
       springframework:
         boot:
           autoconfigure: error
+# 配置属性
+#record:
+#  currentDay: 6
