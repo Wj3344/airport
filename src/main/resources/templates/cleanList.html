@@ -29,7 +29,7 @@
 <div class="mainContainer">
     <div class="form-group">
         <div class="text-center">
-            <h2>次日航班信息查询</h2>
+            <h2>清洁信息查询</h2>
         </div>
     </div>
     <div style="width: 94%;margin: auto;">
@@ -38,27 +38,21 @@
             <tr>
                 <th>序号</th>
                 <th>航班号</th>
-                <th>机号</th>
-                <th>停机位</th>
-                <th>始发站</th>
-                <th>目的地</th>
-                <th>登机时间</th>
+                <th>到位时间</th>
+                <th>清洁用时</th>
                 <th>特殊情况说明</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody>
-            <tr th:each="flightInformation,iterStat:${flightInformationList}">
-                <td th:text="${iterStat.index}">序号</td>
-                <td th:text="${flightInformation.flightNumber}">航班号</td>
-                <td th:text="${flightInformation.planeNumber}">机号</td>
-                <td th:text="${flightInformation.gatePosition}">停机位</td>
-                <td th:text="${flightInformation.departureStation}">始发站</td>
-                <td th:text="${flightInformation.destination}">目的地</td>
-                <td th:text="${#dates.format(flightInformation.boardingTime, 'yyyy/MM/dd HH:mm')}">登机时间</td>
-                <td th:text="${flightInformation.special}">特殊情况说明</td>
+            <tr th:each="cleanRecord,iterStat:${cleanRecordList}">
+                <td th:text="${iterStat.count}">序号</td>
+                <td th:text="${cleanRecord.flightNumber}">航班号</td>
+                <td th:text="${#dates.format(cleanRecord.readTime, 'yyyy/MM/dd HH:mm')}">到位时间</td>
+                <td th:text="${cleanRecord.usedTime}">清洁用时</td>
+                <td th:text="${cleanRecord.specialCase}">特殊情况说明</td>
                 <td>
-                    <a class="btn btn-info btn-sm" th:href="@{'/registration/modify/' + ${flightInformation.id}}"
+                    <a class="btn btn-info btn-sm" th:href="@{'/clean/modify/' + ${cleanRecord.id}}"
                        role="button">修改</a>
                 </td>
             </tr>

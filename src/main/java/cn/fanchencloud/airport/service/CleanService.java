@@ -1,6 +1,9 @@
 package cn.fanchencloud.airport.service;
 
 import cn.fanchencloud.airport.entity.Clean;
+import cn.fanchencloud.airport.model.CleanRecord;
+
+import java.util.List;
 
 /**
  * Created by handsome programmer.
@@ -20,5 +23,11 @@ public interface CleanService {
      */
     boolean addRecord(Clean clean);
 
-
+    /**
+     * 查询最近的记录
+     *
+     * @param currentDay 时间限制
+     * @return 查询结果
+     */
+    List<CleanRecord> getCurrentRecord(int currentDay);
 }

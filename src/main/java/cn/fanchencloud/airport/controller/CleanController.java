@@ -3,6 +3,7 @@ package cn.fanchencloud.airport.controller;
 import cn.fanchencloud.airport.entity.Baggage;
 import cn.fanchencloud.airport.entity.Clean;
 import cn.fanchencloud.airport.entity.FlightInformation;
+import cn.fanchencloud.airport.model.CleanRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.BaggageService;
 import cn.fanchencloud.airport.service.CleanService;
@@ -32,6 +33,11 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/clean")
 public class CleanController {
+
+    /**
+     * 记录时间限制
+     */
+    private int currentDay = 7;
 
     /**
      * 日志记录器
@@ -87,8 +93,13 @@ public class CleanController {
      */
     @GetMapping(value = "/list")
     public String listClean(Model model) {
+        // 查询记录
+        List<CleanRecord> cleanRecordList = cleanService.getCurrentRecord(currentDay);
+        model.addAttribute("cleanRecordList", cleanRecordList);
         return "cleanList";
     }
+
+
 
     @Autowired
     public void setFlightInformationService(FlightInformationService flightInformationService) {
