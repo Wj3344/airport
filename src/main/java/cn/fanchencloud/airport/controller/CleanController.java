@@ -13,10 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -99,6 +96,24 @@ public class CleanController {
         return "cleanList";
     }
 
+    @GetMapping(value = "/modify/{id}")
+    public String modifyPage(@PathVariable("id") int id, Model model) {
+        CleanRecord cleanRecord = cleanService.getCleanRecordById(id);
+        model.addAttribute("cleanRecord", cleanRecord);
+        return "cleanModify";
+    }
+
+    @PostMapping(value = "/modify")
+    @ResponseBody
+    public JsonResponse modifyClean(Clean clean) {
+        logger.info(clean.toString());
+        boolean update = cleanService.updateRecord(clean);
+        if (update) {
+            return JsonResponse.ok();
+        } else {
+            return JsonResponse.errorMsg("修改失败！");
+        }
+    }
 
 
     @Autowired

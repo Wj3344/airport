@@ -1,6 +1,7 @@
 package cn.fanchencloud.airport.service.impl;
 
 import cn.fanchencloud.airport.entity.Clean;
+import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.mapper.CleanMapper;
 import cn.fanchencloud.airport.model.CleanRecord;
 import cn.fanchencloud.airport.service.CleanService;
@@ -68,6 +69,26 @@ public class CleanServiceImpl implements CleanService {
             cleanRecordList.add(cleanRecord);
         }
         return cleanRecordList;
+    }
+
+    @Override
+    public CleanRecord getCleanRecordById(int id) {
+        Clean clean = cleanMapper.getRecordById(id);
+        FlightInformation flightInformation = flightInformationService.queryRecordById(clean.getFlightInformationId());
+        CleanRecord cleanRecord = new CleanRecord();
+        try {
+            BeanUtils.fatherToChild(clean, cleanRecord);
+        } catch (Exception e) {
+            logger.error("类型转换失败！方法：getCleanRecordById");
+            e.printStackTrace();
+        }
+        cleanRecord.setFlightNumber(flightInformation.getFlightNumber());
+        return cleanRecord;
+    }
+
+    @Override
+    public boolean updateRecord(Clean clean) {
+        return cleanMapper.updateRecord(clean) != 0;
     }
 
     @Autowired

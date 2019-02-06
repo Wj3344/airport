@@ -1,10 +1,7 @@
 package cn.fanchencloud.airport.mapper;
 
 import cn.fanchencloud.airport.entity.Clean;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -40,4 +37,22 @@ public interface CleanMapper {
      */
     @Select("select * from clean where createTime >= DATE_SUB(NOW(),INTERVAL #{currentDay} DAY);")
     List<Clean> getCurrentRecord(int currentDay);
+
+    /**
+     * 通过记录id'查询记录
+     *
+     * @param id 记录id
+     * @return 查询结果
+     */
+    @Select("select * from clean where id = #{id}")
+    Clean getRecordById(int id);
+
+    /**
+     * 更新一条记录
+     *
+     * @param clean 清洁信息记录
+     * @return 更新结果
+     */
+    @Update("update clean set readTime = #{readTime}, usedTime = #{usedTime}, specialCase = #{specialCase} where id = #{id}")
+    int updateRecord(Clean clean);
 }

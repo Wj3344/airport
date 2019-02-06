@@ -66,7 +66,7 @@ public class FlightInformationServiceImpl implements FlightInformationService {
     }
 
     @Override
-    public FlightInformation getRecordById(int id) {
+    public FlightInformation queryRecordById(int id) {
         return flightInformationMapper.queryById(id);
     }
 

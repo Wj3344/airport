@@ -36,5 +36,5 @@ public interface FlightInformationService {
      * @param id 记录id
      * @return 查询结果
      */
-    FlightInformation getRecordById(int id);
+    FlightInformation queryRecordById(int id);
 }

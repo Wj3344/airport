@@ -73,7 +73,8 @@
                 <button type="reset" class="btn btn-lg btn-danger btn-block">全部清空</button>
             </div>
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="submit" id="check-btn" onclick="checkSubmit()" class="btn btn-lg btn-success btn-block">
+                <button type="submit" id="check-btn" onclick="checkInPageSubmit()"
+                        class="btn btn-lg btn-success btn-block">
                     上传
                 </button>
             </div>
@@ -81,6 +82,7 @@
     </form>
 </div>
 </body>
+<script th:src="@{/js/httpRequest.js}" type="text/javascript"></script>
 <script type="text/javascript" th:inline="javascript">
     // 页面加载完成后触发
     $(function () {
@@ -90,42 +92,5 @@
             alert("暂时没有航班信息，或者所有航班都已添加信息，请到值机信息查询列表查看！");
         }
     });
-
-    var checkSubmit = function () {
-        console.log("执行查询函数");
-        $("#check-btn").attr("disabled", "disabled");
-
-        // 封装数据
-        $.ajax({
-            type: "POST",
-            url: "/checkIn/add",
-            dataType: "json",
-            data: {
-                "flightInformationId": $('#flightNumber option:selected').val(),
-                "realNumber": $("#peopleNumber").val(),
-                "luggageNumber": $("#baggageNumber").val(),
-                "specialCase": $("#specialCircumstances").val()
-            },
-            success: function (response) {
-                if (response.status === 200) {
-                    // 请求成功
-                    alert("记录添加成功,现在返回！");
-                    // 数据修改成功，重新跳转回查询界面
-                    window.location.href = "/checkIn/add";
-                } else {
-                    alert("修改失败，请稍后重试！");
-                }
-            },
-            error: function (xhr) {
-                console.log("错误提示： " + xhr + " ---- " + xhr.status + " " + xhr.statusText);
-            },
-            //请求完成后回调函数 (请求成功或失败之后均调用)。参数： XMLHttpRequest 对象和一个描述成功请求类型的字符串
-            complete: function (XMLHttpRequest, textStatus) {
-                console.log("函数调用完成，将按钮设置为可用状态");
-                // 请求完成，将按钮重置为可用
-                $("#check-btn").removeAttr("disabled");
-            }
-        });
-    };
 </script>
 </html>

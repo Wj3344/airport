@@ -30,4 +30,20 @@ public interface CleanService {
      * @return 查询结果
      */
     List<CleanRecord> getCurrentRecord(int currentDay);
+
+    /**
+     * 根据清洁信息记录id查询清洁信息记录
+     *
+     * @param id 记录id
+     * @return 查询结果
+     */
+    CleanRecord getCleanRecordById(int id);
+
+    /**
+     * 修改一条清洁记录
+     *
+     * @param clean 清洁记录
+     * @return 更新结果
+     */
+    boolean updateRecord(Clean clean);
 }

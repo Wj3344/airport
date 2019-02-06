@@ -29,17 +29,16 @@
     <form>
         <div class="form-group">
             <div class="text-center">
-                <h2>清洁信息录入</h2>
+                <h2>清洁信息修改</h2>
             </div>
         </div>
+
+        <input hidden="hidden" id="recordId" name="id" th:value="${cleanRecord.id}">
         <div class="row">
             <div class="form-group col-sm-offset-3 col-sm-6">
                 <label for="flightNumber" class="control-label">航班选择：</label>
-                <select class="form-control" id="flightNumber" name="flightInformationId">
-                    <option th:each="flightInformation:${flightInformationList}" th:value="${flightInformation.id}"
-                            th:text="${flightInformation.flightNumber}">测试数据
-                    </option>
-                </select>
+                <input class="form-control" id="flightNumber" name="flight" disabled
+                       th:value="${cleanRecord.flightNumber}">
             </div>
         </div>
         <div class="row">
@@ -47,11 +46,12 @@
                 <label for="inPlace" class="control-label">到位时间：</label>
                 <div class="input-group date form_datetime "
                      data-date-format="yyyy年MMdd日 - HH:ii p" data-link-field="inPlace">
-                    <input class="form-control" size="16" type="text" value="" placeholder="请选择到位时间" readonly>
+                    <input class="form-control" size="16" type="text" value="" placeholder="请选择到位时间"
+                           th:value="${#dates.format(cleanRecord.readTime, 'yyyy年MM月dd日 - HH:mm')}" readonly>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
                 </div>
-                <input type="hidden" id="inPlace" name="readTime" readonly required/><br/>
+                <input type="hidden" id="inPlace" name="readTime" th:value="${cleanRecord.readTime}" readonly required/><br/>
             </div>
         </div>
         <div class="row">
@@ -59,7 +59,7 @@
                 <label for="usedTime">清洁用时：</label>
                 <div class="input-group">
                     <input type="number" id="usedTime" name="usedTime" class="form-control" placeholder="请输入清洁用时，单位（分钟）"
-                           aria-describedby="basic-addon2" required
+                           aria-describedby="basic-addon2" required th:value="${cleanRecord.usedTime}"
                            onKeypress="return (/[\d]/.test(String.fromCharCode(event.keyCode)))">
                     <span class="input-group-addon" id="basic-addon2">分钟</span>
                 </div>
@@ -70,17 +70,17 @@
                 <label for="specialCircumstances" class="control-label">特殊情况说明：</label>
                 <div class="">
                     <textarea class="form-control" style="resize: none" name="specialCase" rows="3"
-                              id="specialCircumstances"></textarea>
+                              id="specialCircumstances">[[${cleanRecord.specialCase}]]</textarea>
                 </div>
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-sm-offset-3 col-sm-2">
-                <button type="reset" class="btn btn-lg btn-danger btn-block">全部清空</button>
+                <a class="btn btn-primary btn-lg btn-block" th:href="@{/clean/list}">取消修改</a>
             </div>
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="button" onclick="cleanPageCheckSubmit()" id="check-btn"
+                <button type="button" onclick="cleanModifyCheckSubmit()" id="check-btn"
                         class="btn btn-lg btn-success btn-block">
                     上传
                 </button>
@@ -103,13 +103,5 @@
         forceParse: 0,
         showMeridian: 1,
         minuteStep: 1
-    });
-    // 页面加载完成后触发
-    $(function () {
-        // 检查下拉列表是否为空
-        var selectTest = $("#flightNumber").children();
-        if (selectTest.length === 0) {
-            alert("暂时没有航班信息，或者所有航班都已添加信息，请到清洁信息查询列表查看！");
-        }
     });
 </script>

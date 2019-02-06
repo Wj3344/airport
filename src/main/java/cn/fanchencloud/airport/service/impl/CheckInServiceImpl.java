@@ -83,7 +83,7 @@ public class CheckInServiceImpl implements CheckInService {
             logger.error("类型转换出错，getCheckInRecordById");
             e.printStackTrace();
         }
-        FlightInformation flightInformation = flightInformationService.getRecordById(checkInRecord.getFlightInformationId());
+        FlightInformation flightInformation = flightInformationService.queryRecordById(checkInRecord.getFlightInformationId());
         checkInRecord.setFlightNumber(flightInformation.getFlightNumber());
         return checkInRecord;
     }
