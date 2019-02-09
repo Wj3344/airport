@@ -2,6 +2,7 @@ package cn.fanchencloud.airport.controller;
 
 import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.entity.StandCar;
+import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.FlightInformationService;
 import cn.fanchencloud.airport.service.StandCarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class StandCarController {
      */
     @GetMapping(value = "/add")
     public String addStandCar(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryDataWithinOneDay();
+        List<FlightInformation> flightInformationList = flightInformationService.queryStandCarDataWithinCurrentDaysNoMarked(7);
         model.addAttribute("flightInformationList", flightInformationList);
         return "standCar";
     }
@@ -54,26 +55,18 @@ public class StandCarController {
     /**
      * 请求添加一条站坪信息
      *
-     * @param flightInformationId 航班信息记录id
-     * @param vipTime             vip车辆到位时间时间
-     * @param cartTime            推车到位时间
-     * @param specialCase         特殊情况说明
+     * @param standCar 站坪信息
      * @return 添加结果
      */
     @PostMapping(value = "/add")
     @ResponseBody
-    public String addStandCar(int flightInformationId, String vipTime, String cartTime, String specialCase) {
-        StandCar standCar = new StandCar();
-        standCar.setFlightInformationId(flightInformationId);
-        standCar.setVipTime(new Date(Long.parseLong(vipTime)));
-        standCar.setCartTime(new Date(Long.parseLong(cartTime)));
-        standCar.setSpecialCase(specialCase);
+    public JsonResponse addStandCar(StandCar standCar) {
         // 将数据交给服务层处理
         boolean b = standCarService.addRecord(standCar);
         if (b) {
-            return "添加成功";
+            return JsonResponse.ok();
         } else {
-            return "添加失败";
+            return JsonResponse.errorMsg("添加失败");
         }
     }
 

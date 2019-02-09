@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by handsome programmer.
@@ -49,14 +50,23 @@ public class CheckInServiceImpl implements CheckInService {
         return i != 0;
     }
 
-    @Override
-    public List<CheckInRecord> getCurrentRecords(int currentDays) {
-        // 查询值机信息
-        List<CheckIn> checkInList = checkInMapper.getCurrentRecords(currentDays);
+    /**
+     * @param checkInList 值机记录列表
+     * @return id 列表
+     */
+    private List<Integer> getCheckInRecordIds(List<CheckIn> checkInList) {
         List<Integer> ids = new ArrayList<>(checkInList.size());
         for (CheckIn c : checkInList) {
             ids.add(c.getFlightInformationId());
         }
+        return ids;
+    }
+
+    @Override
+    public List<CheckInRecord> getCurrentRecords(int currentDays) {
+        // 查询值机信息
+        List<CheckIn> checkInList = checkInMapper.getCurrentRecords(currentDays);
+        List<Integer> ids = checkInList.stream().map(CheckIn::getFlightInformationId).collect(Collectors.toList());
         Map<Integer, String> map = flightInformationService.queryFlightNumberWithId(ids);
         List<CheckInRecord> checkInRecordList = new ArrayList<>(checkInList.size());
         for (CheckIn c : checkInList) {

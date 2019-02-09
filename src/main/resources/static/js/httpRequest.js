@@ -53,6 +53,11 @@ var cleanPageCheckSubmit = function () {
     // 将上传按钮设置位不可用状态
     var checkButton = $("#check-btn");
     checkButton.attr("disabled", "disabled");
+    if ($("#flightNumber").val() == null) {
+        checkButton.removeAttr("disabled");
+        alert("请选择航班！");
+        return false;
+    }
     var inPlace = $("#inPlace");
     var inPlaceValue = inPlace.val();
     if (inPlaceValue === "") {
@@ -77,16 +82,7 @@ var cleanPageCheckSubmit = function () {
     postData.usedTime = usedTime.val();
     postData.specialCase = $("#specialCircumstances").val();
     console.log(postData);
-    postRequest({
-        parameters: {
-            parameters: {
-                url: "/clean/add",
-                data: postData,
-                btn: checkButton,
-                callbackAddress: "/clean/list"
-            }
-        }
-    });
+    postRequest("/clean/add", postData, checkButton, "/clean/list");
     checkButton.removeAttr("disabled");
 };
 
@@ -132,6 +128,11 @@ var cleanModifyCheckSubmit = function () {
 var checkInPageSubmit = function () {
     var checkButton = $("#check-btn");
     checkButton.attr("disabled", "disabled");
+    if ($("#flightNumber").val() == null) {
+        checkButton.removeAttr("disabled");
+        alert("请选择航班！");
+        return false;
+    }
     // 封装请求数据
     var postData = {};
     postData.flightInformationId = $('#flightNumber option:selected').val();
@@ -139,16 +140,46 @@ var checkInPageSubmit = function () {
     postData.luggageNumber = $("#baggageNumber").val();
     postData.specialCase = $("#specialCircumstances").val();
     // 提交数据
-    postRequest({
-        parameters: {
-            parameters: {
-                url: "/checkIn/add",
-                data: postData,
-                btn: checkButton,
-                callbackAddress: "/checkIn/search"
-            }
-        }
-    });
+    postRequest("/checkIn/add", postData, checkButton, "/checkIn/search");
     checkButton.removeAttr("disabled");
-
 };
+
+// 站坪车辆信息 start
+var checkSubmitStandCarAddPage = function () {
+    var checkButton = $("#checkSubmitStandCarAddPage-btn");
+    checkButton.attr("disabled", "disabled");
+    if ($("#flightInformationId").val() == null) {
+        checkButton.removeAttr("disabled");
+        alert("请选择航班！");
+        return false;
+    }
+    // VIP车辆到位时间
+    var vipTime = $("#vipTime").val();
+    if (vipTime === "") {
+        checkButton.removeAttr("disabled");
+        alert("请填写VIP车辆到位时间！");
+        return false;
+    }
+    // 将时间转化成时间戳
+    var vip = new Date(vipTime).getTime();
+
+    // 推车到位时间
+    var cartTime = $("#cartTime").val();
+    if (cartTime === "") {
+        checkButton.removeAttr("disabled");
+        alert("请填写推车到位时间！");
+        return false;
+    }
+    // 将时间转化成时间戳
+    var car = new Date(cartTime).getTime();
+    // 封装数据
+    // 封装请求数据
+    var postData = {};
+    postData.flightInformationId = $('#flightInformationId option:selected').val();
+    postData.vipTime = vip;
+    postData.cartTime = car;
+    postData.specialCase = $("#specialCircumstances").val();
+    postRequest("/standCar/add", postData, checkButton, "/index_back");
+    checkButton.removeAttr("disabled");
+};
+// 站坪车辆信息 end

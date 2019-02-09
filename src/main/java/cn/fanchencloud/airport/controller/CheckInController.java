@@ -55,7 +55,7 @@ public class CheckInController {
      */
     @GetMapping(value = "/add")
     public String addBaggage(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryDataWithinOneDay();
+        List<FlightInformation> flightInformationList = flightInformationService.queryCheckInDataWithinCurrentDaysNoMarked(currentDays);
         model.addAttribute("flightInformationList", flightInformationList);
         return "checkIn";
     }

@@ -45,7 +45,7 @@ public class LoginController {
         try {
             subject.login(token);
             // 跳转到首页
-            return "index";
+            return "redirect:/index";
         } catch (AuthenticationException e) {
             return "login";
         }
@@ -57,7 +57,7 @@ public class LoginController {
     }
 
     @RequestMapping("/index_back")
-    public String index_back() {
+    public String indexBack() {
         return "index_back";
     }
 

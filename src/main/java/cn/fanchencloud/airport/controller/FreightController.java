@@ -46,7 +46,7 @@ public class FreightController {
      */
     @GetMapping(value = "/add")
     public String addFreight(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryDataWithinOneDay();
+        List<FlightInformation> flightInformationList = flightInformationService.queryFreightDataWithinCurrentDaysNoMarked(7);
         model.addAttribute("flightInformationList", flightInformationList);
         return "freight";
     }

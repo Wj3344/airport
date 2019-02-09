@@ -46,7 +46,7 @@ public class IntegratedServiceController {
      */
     @GetMapping(value = "/add")
     public String addIntegratedService(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryDataWithinOneDay();
+        List<FlightInformation> flightInformationList = flightInformationService.queryIntegratedServiceDataWithinCurrentDaysNoMarked(7);
         model.addAttribute("flightInformationList", flightInformationList);
         return "integratedService";
     }

@@ -59,7 +59,7 @@ public class CleanController {
      */
     @GetMapping(value = "/add")
     public String addClean(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryDataWithinOneDay();
+        List<FlightInformation> flightInformationList = flightInformationService.queryCleanDataWithinCurrentDaysNoMarked(currentDay);
         model.addAttribute("flightInformationList", flightInformationList);
         return "clean";
     }
