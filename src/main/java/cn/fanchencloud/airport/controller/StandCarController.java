@@ -3,6 +3,7 @@ package cn.fanchencloud.airport.controller;
 import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.entity.StandCar;
 import cn.fanchencloud.airport.model.JsonResponse;
+import cn.fanchencloud.airport.model.StandCarRecord;
 import cn.fanchencloud.airport.service.FlightInformationService;
 import cn.fanchencloud.airport.service.StandCarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,11 @@ public class StandCarController {
     private StandCarService standCarService;
 
     /**
+     * 时间限制
+     */
+    private int currentDay = 7;
+
+    /**
      * 请求跳转到添加站坪信息页面
      *
      * @param model 模型
@@ -68,6 +74,20 @@ public class StandCarController {
         } else {
             return JsonResponse.errorMsg("添加失败");
         }
+    }
+
+    /**
+     * 查询记录并返回页面
+     *
+     * @param model 模型
+     * @return 返回页面
+     */
+    @GetMapping(value = "/list")
+    public String listPage(Model model) {
+        // 查询记录
+        List<StandCarRecord> standCarRecordList = standCarService.getCurrentRecord(currentDay);
+        model.addAttribute("standCarRecordList", standCarRecordList);
+        return "standCarList";
     }
 
     @Autowired

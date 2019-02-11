@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by handsome programmer.
@@ -51,10 +52,7 @@ public class CleanServiceImpl implements CleanService {
     @Override
     public List<CleanRecord> getCurrentRecord(int currentDay) {
         List<Clean> cleans = cleanMapper.getCurrentRecord(currentDay);
-        List<Integer> ids = new ArrayList<>(cleans.size());
-        for (Clean clean : cleans) {
-            ids.add(clean.getFlightInformationId());
-        }
+        List<Integer> ids = cleans.stream().map(Clean::getFlightInformationId).collect(Collectors.toList());
         Map<Integer, String> map = flightInformationService.queryFlightNumberWithId(ids);
         List<CleanRecord> cleanRecordList = new ArrayList<>(cleans.size());
         for (Clean clean : cleans) {
