@@ -30,4 +30,20 @@ public interface StandCarService {
      * @return 查询结果
      */
     List<StandCarRecord> getCurrentRecord(int currentDay);
+
+    /**
+     * 根据记录id 查询记录
+     *
+     * @param id 记录id
+     * @return 查询的记录
+     */
+    StandCarRecord getRecordById(int id);
+
+    /**
+     * 修改一条站坪信息记录
+     *
+     * @param standCar 站坪信息
+     * @return 修改结果
+     */
+    boolean modifyRecord(StandCar standCar);
 }

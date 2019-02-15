@@ -1,5 +1,6 @@
 package cn.fanchencloud.airport.service.impl;
 
+import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.entity.StandCar;
 import cn.fanchencloud.airport.mapper.StandCarMapper;
 import cn.fanchencloud.airport.model.StandCarRecord;
@@ -70,6 +71,26 @@ public class StandCarServiceImpl implements StandCarService {
             standCarRecordList.add(standCarRecord);
         }
         return standCarRecordList;
+    }
+
+    @Override
+    public StandCarRecord getRecordById(int id) {
+        StandCar standCar = standCarMapper.getRecordById(id);
+        StandCarRecord standCarRecord = new StandCarRecord();
+        try {
+            BeanUtils.fatherToChild(standCar, standCarRecord);
+        } catch (Exception e) {
+            logger.error("类型转换失败！StandCarService.getRecordById");
+            e.printStackTrace();
+        }
+        FlightInformation flightInformation = flightInformationService.queryRecordById(standCar.getFlightInformationId());
+        standCarRecord.setFlightNumber(flightInformation.getFlightNumber());
+        return standCarRecord;
+    }
+
+    @Override
+    public boolean modifyRecord(StandCar standCar) {
+        return standCarMapper.update(standCar) != 0;
     }
 
     @Autowired

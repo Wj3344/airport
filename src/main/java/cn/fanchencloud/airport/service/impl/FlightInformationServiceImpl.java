@@ -1,9 +1,6 @@
 package cn.fanchencloud.airport.service.impl;
 
-import cn.fanchencloud.airport.entity.CheckIn;
-import cn.fanchencloud.airport.entity.Clean;
-import cn.fanchencloud.airport.entity.FlightInformation;
-import cn.fanchencloud.airport.entity.StandCar;
+import cn.fanchencloud.airport.entity.*;
 import cn.fanchencloud.airport.mapper.*;
 import cn.fanchencloud.airport.service.FlightInformationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +53,11 @@ public class FlightInformationServiceImpl implements FlightInformationService {
      * 注入站坪信息持久化层
      */
     private StandCarMapper standCarMapper;
+
+    /**
+     * 注入综合信息服务持久化层
+     */
+    private IntegratedServiceMapper integratedServiceMapper;
 
     @Override
     public List<FlightInformation> queryDataWithinOneDay(List<Integer> flightInformationIds) {
@@ -115,7 +117,9 @@ public class FlightInformationServiceImpl implements FlightInformationService {
 
     @Override
     public List<FlightInformation> queryIntegratedServiceDataWithinCurrentDaysNoMarked(int currentDay) {
-        return null;
+        List<IntegratedService> integratedServiceList = integratedServiceMapper.getCurrentRecord(currentDay);
+        List<Integer> ids = integratedServiceList.stream().map(IntegratedService::getFlightInformationId).collect(Collectors.toList());
+        return queryDataWithinOneDay(ids);
     }
 
     @Override
@@ -154,5 +158,10 @@ public class FlightInformationServiceImpl implements FlightInformationService {
     @Autowired
     public void setStandCarMapper(StandCarMapper standCarMapper) {
         this.standCarMapper = standCarMapper;
+    }
+
+    @Autowired
+    public void setIntegratedServiceMapper(IntegratedServiceMapper integratedServiceMapper) {
+        this.integratedServiceMapper = integratedServiceMapper;
     }
 }

@@ -182,4 +182,124 @@ var checkSubmitStandCarAddPage = function () {
     postRequest("/standCar/add", postData, checkButton, "/index_back");
     checkButton.removeAttr("disabled");
 };
+
+var checkSubmitStandCarModifyPage = function () {
+    // 将按钮禁用
+    var checkButton = $("#checkSubmitStandCarModifyPage-btn");
+    checkButton.attr("disabled", "disabled");
+    // VIP车辆到位时间
+    var vipTime = $("#vipTime").val();
+    if (vipTime === "") {
+        checkButton.removeAttr("disabled");
+        alert("请填写VIP车辆到位时间！");
+        return false;
+    }
+    // 将时间转化成时间戳
+    var vip = new Date(vipTime).getTime();
+    // 推车到位时间
+    var cartTime = $("#cartTime").val();
+    if (cartTime === "") {
+        checkButton.removeAttr("disabled");
+        alert("请填写推车到位时间！");
+        return false;
+    }
+    // 将时间转化成时间戳
+    var car = new Date(cartTime).getTime();
+
+    // 封装请求数据
+    var postData = {};
+    postData.id = $("#recordId").val();
+    postData.flightInformationId = $('#flightInformationId').val();
+    postData.vipTime = vip;
+    postData.cartTime = car;
+    postData.specialCase = $("#specialCircumstances").val();
+    postRequest("/standCar/modify", postData, checkButton, "/standCar/list");
+    checkButton.removeAttr("disabled");
+};
 // 站坪车辆信息 end
+
+/*   综合服务 start     */
+
+/**
+ * 综合信息添加数据的确认函数
+ * @returns {boolean}
+ */
+var integratedServiceAddCheck = function () {
+    var checkButton = $("#checkSubmitIntegratedServiceAddPage-btn");
+    checkButton.attr("disabled", "disabled");
+    if ($("#flightInformationId").val() == null) {
+        checkButton.removeAttr("disabled");
+        alert("请选择航班！");
+        return false;
+    }
+    // 登机时间
+    var boardingTime = $("#boardingTime");
+    if (boardingTime.val() === "") {
+        alert("请填写登机时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 客齐时间
+    var readyTime = $("#readyTime");
+    if (readyTime.val() === "") {
+        alert("请填写客齐时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 关闭客舱时间
+    var closeTime = $("#closeTime");
+    if (closeTime.val() === "") {
+        alert("请填写关闭客舱时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 封装请求数据
+    var postData = {};
+    postData.flightInformationId = $('#flightInformationId option:selected').val();
+    postData.boardingTime = new Date(boardingTime.val()).getTime();
+    postData.readyTime = new Date(readyTime.val()).getTime();
+    postData.closeTime = new Date(closeTime.val()).getTime();
+    postData.specialCase = $("#specialCase").val();
+    postRequest("/integratedService/add", postData, checkButton, "/integratedService/list");
+    checkButton.removeAttr("disabled");
+};
+
+/**
+ * 提交综合信息服务修改数据
+ * @returns {boolean}
+ */
+var integratedServiceModifyCheck = function () {
+    var checkButton = $("#checkSubmitIntegratedServiceModifyPage-btn");
+    checkButton.attr("disabled", "disabled");
+    // 登机时间
+    var boardingTime = $("#boardingTime");
+    if (boardingTime.val() === "") {
+        alert("请填写登机时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 客齐时间
+    var readyTime = $("#readyTime");
+    if (readyTime.val() === "") {
+        alert("请填写客齐时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 关闭客舱时间
+    var closeTime = $("#closeTime");
+    if (closeTime.val() === "") {
+        alert("请填写关闭客舱时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 封装请求数据
+    var postData = {};
+    postData.id = $("#recordId").val();
+    postData.boardingTime = new Date(boardingTime.val()).getTime();
+    postData.readyTime = new Date(readyTime.val()).getTime();
+    postData.closeTime = new Date(closeTime.val()).getTime();
+    postData.specialCase = $("#specialCase").val();
+    postRequest("/integratedService/modify", postData, checkButton, "/integratedService/list");
+    checkButton.removeAttr("disabled");
+};
+/*   综合服务 end     */

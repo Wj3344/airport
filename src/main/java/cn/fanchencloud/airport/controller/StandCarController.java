@@ -9,10 +9,7 @@ import cn.fanchencloud.airport.service.StandCarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -88,6 +85,31 @@ public class StandCarController {
         List<StandCarRecord> standCarRecordList = standCarService.getCurrentRecord(currentDay);
         model.addAttribute("standCarRecordList", standCarRecordList);
         return "standCarList";
+    }
+
+    /**
+     * 修改站坪车辆信息
+     *
+     * @param model 模型
+     * @param id    记录id
+     * @return 页面返回
+     */
+    @GetMapping(value = "/modify/{id}")
+    public String modify(Model model, @PathVariable(value = "id") int id) {
+        StandCarRecord standCarRecord = standCarService.getRecordById(id);
+        model.addAttribute("standCarRecord", standCarRecord);
+        return "standCarModify";
+    }
+
+
+    @PostMapping(value = "/modify")
+    @ResponseBody
+    public JsonResponse modify(StandCar standCar) {
+        boolean modify = standCarService.modifyRecord(standCar);
+        if (!modify) {
+            return JsonResponse.errorMsg("修改失败！");
+        }
+        return JsonResponse.ok();
     }
 
     @Autowired

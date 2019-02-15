@@ -4,6 +4,7 @@ import cn.fanchencloud.airport.entity.StandCar;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -38,4 +39,26 @@ public interface StandCarMapper {
      */
     @Select("select * from stand where createTime >= DATE_SUB(NOW(),INTERVAL #{currentDay} DAY);")
     List<StandCar> getCurrentRecords(int currentDay);
+
+    /**
+     * 根据记录id 查询记录信息
+     *
+     * @param id id
+     * @return 查询结果
+     */
+    @Select("select * from stand where id = #{id}")
+    StandCar getRecordById(int id);
+
+    /**
+     * 修改一条记录
+     *
+     * @param standCar 记录
+     * @return 修改结果
+     */
+    @Update("update stand\n" +
+            "set vipTime = #{vipTime},\n" +
+            "    cartTime = #{cartTime},\n" +
+            "    specialCase = #{specialCase}\n" +
+            "where id = #{id};")
+    int update(StandCar standCar);
 }

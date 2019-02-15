@@ -2,15 +2,16 @@ package cn.fanchencloud.airport.controller;
 
 import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.entity.IntegratedService;
+import cn.fanchencloud.airport.model.IntegratedServiceRecord;
+import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.FlightInformationService;
 import cn.fanchencloud.airport.service.IntegratedServiceService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,12 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/integratedService")
 public class IntegratedServiceController {
+
+    /**
+     * 日志记录器
+     */
+    private static Logger logger = LoggerFactory.getLogger(IntegratedServiceController.class);
+
     /**
      * 注入航班信息服务层
      */
@@ -37,6 +44,10 @@ public class IntegratedServiceController {
      */
     private IntegratedServiceService integratedServiceService;
 
+    /**
+     * 时间限制
+     */
+    private int currentDay = 7;
 
     /**
      * 请求跳转到进行添加综合服务信息
@@ -46,7 +57,7 @@ public class IntegratedServiceController {
      */
     @GetMapping(value = "/add")
     public String addIntegratedService(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryIntegratedServiceDataWithinCurrentDaysNoMarked(7);
+        List<FlightInformation> flightInformationList = flightInformationService.queryIntegratedServiceDataWithinCurrentDaysNoMarked(currentDay);
         model.addAttribute("flightInformationList", flightInformationList);
         return "integratedService";
     }
@@ -55,29 +66,60 @@ public class IntegratedServiceController {
     /**
      * 请求添加一条综合服务信息记录
      *
-     * @param flightInformationId 航班信息记录id
-     * @param boardingTime        登机时间
-     * @param readyTime           客齐时间
-     * @param closeTime           关闭货仓时间
-     * @param specialCase         特殊情况说明
+     * @param integratedService 综合服务信息
      * @return 添加结果
      */
     @ResponseBody
     @PostMapping(value = "/add")
-    public String addIntegratedService(int flightInformationId, String boardingTime, String readyTime, String closeTime, String specialCase) {
-        // 封装数据对象
-        IntegratedService integratedService = new IntegratedService();
-        integratedService.setFlightInformationId(flightInformationId);
-        integratedService.setBoardingTime(new Date(Long.parseLong(boardingTime)));
-        integratedService.setReadyTime(new Date(Long.parseLong(readyTime)));
-        integratedService.setCloseTime(new Date(Long.parseLong(closeTime)));
-        integratedService.setSpecialCase(specialCase);
+    public JsonResponse addIntegratedService(IntegratedService integratedService) {
         // 将数据交给服务层处理
-        boolean record = integratedServiceService.insertRecord(integratedService);
-        if (record) {
-            return "添加综合服务信息成功";
+        if (integratedServiceService.insertRecord(integratedService)) {
+            return JsonResponse.ok();
         } else {
-            return "添加综合服务信息失败";
+            return JsonResponse.errorMsg("添加数据失败！");
+        }
+    }
+
+    /**
+     * 请求到综合服务信息列表
+     *
+     * @param model 模型
+     * @return 页面跳转
+     */
+    @GetMapping(value = "/list")
+    public String list(Model model) {
+        List<IntegratedServiceRecord> integratedServiceRecordList = integratedServiceService.getCurrentRecord(currentDay);
+        model.addAttribute("integratedServiceRecordList", integratedServiceRecordList);
+        return "integratedServiceList";
+    }
+
+    /**
+     * 请求到综合信息修改界面
+     *
+     * @param model 模型
+     * @param id    记录id
+     * @return 页面跳转
+     */
+    @GetMapping(value = "/modify/{id}")
+    public String modify(Model model, @PathVariable("id") int id) {
+        IntegratedServiceRecord integratedServiceRecord = integratedServiceService.getRecordById(id);
+        model.addAttribute("integratedServiceRecord", integratedServiceRecord);
+        return "integratedServiceModify";
+    }
+
+    /**
+     * 请求修改一条综合服务信息
+     *
+     * @param integratedService 综合服务信息
+     * @return 修改结果
+     */
+    @PostMapping(value = "/modify")
+    @ResponseBody
+    public JsonResponse modify(IntegratedService integratedService) {
+        if (integratedServiceService.updateRecord(integratedService)) {
+            return JsonResponse.ok();
+        } else {
+            return JsonResponse.errorMsg("更新数据失败！");
         }
     }
 
