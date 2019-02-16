@@ -4,6 +4,7 @@ import cn.fanchencloud.airport.entity.Baggage;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -40,4 +41,11 @@ public interface BaggageMapper {
     @Delete("delete from baggage where id = #{id}")
     int deleteRecord(int id);
 
+    /**
+     * 查询最近的记录
+     * @param currentDay 时间限制
+     * @return 查询列表
+     */
+    @Select("select * from baggage where  createTime >= DATE_SUB(NOW(),INTERVAL #{currentDay} DAY);")
+    List<Baggage> getCurrentRecord(int currentDay);
 }

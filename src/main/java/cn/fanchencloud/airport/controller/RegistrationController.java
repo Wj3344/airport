@@ -5,10 +5,8 @@ import cn.fanchencloud.airport.entity.PassengerTag;
 import cn.fanchencloud.airport.entity.SpecialFlight;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.model.Registration;
-import cn.fanchencloud.airport.model.ResponseWrapper;
 import cn.fanchencloud.airport.service.RegistrationService;
 import com.alibaba.fastjson.JSON;
-import com.sun.org.apache.regexp.internal.RE;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 /**

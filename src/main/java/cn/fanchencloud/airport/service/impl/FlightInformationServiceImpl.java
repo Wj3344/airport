@@ -107,7 +107,9 @@ public class FlightInformationServiceImpl implements FlightInformationService {
 
     @Override
     public List<FlightInformation> queryBaggageDataWithinCurrentDaysNoMarked(int currentDay) {
-        return null;
+        List<Baggage> baggage = baggageMapper.getCurrentRecord(currentDay);
+        List<Integer> ids = baggage.stream().map(Baggage::getFlightInformationId).collect(Collectors.toList());
+        return queryDataWithinOneDay(ids);
     }
 
     @Override
