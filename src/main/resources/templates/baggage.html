@@ -78,12 +78,15 @@
                 <button type="reset" class="btn btn-lg btn-danger btn-block">全部清空</button>
             </div>
             <div class="col-sm-offset-2 col-sm-2">
-                <button type="submit" class="btn btn-lg btn-success btn-block">上传</button>
+                <button type="button" class="btn btn-lg btn-success btn-block" id="baggageAddButton"
+                        onclick="checkSubmitBaggageAddPage()">上传
+                </button>
             </div>
         </div>
     </form>
 </div>
 </body>
+<script th:src="@{/js/httpRequest.js}" type="text/javascript"></script>
 </html>
 <script type="text/javascript">
     <!-- 时间组件初始化 -->
@@ -98,31 +101,4 @@
         showMeridian: 1,
         minuteStep: 1
     });
-
-    var checkSubmit = function () {
-        // 行李车发车时间
-        var inPlaceTime = $("#inPlaceTime").val();
-        if (inPlaceTime === "") {
-            alert("请填写行李车发车时间！");
-            return false;
-        }
-        console.log("行李车发车时间：" + inPlaceTime);
-        var usedTime = $("#usedTime").val();
-        if (usedTime === "") {
-            alert("请填写传送带到位时间！");
-            return false;
-        }
-        console.log("传送带到位时间：" + usedTime);
-        // 将时间转换成时间戳
-        var dateTime = new Date(inPlaceTime).getTime();
-        console.log("时间戳1：" + dateTime);
-        // 重新赋值
-        $("#inPlaceTime").attr("value", dateTime);
-        dateTime = new Date(usedTime).getTime();
-        console.log("时间戳1：" + dateTime);
-        $("#usedTime").attr("value", dateTime);
-        return true;
-    };
-
-
 </script>

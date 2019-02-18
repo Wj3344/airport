@@ -303,3 +303,115 @@ var integratedServiceModifyCheck = function () {
     checkButton.removeAttr("disabled");
 };
 /*   综合服务 end     */
+
+/* 行查信息服务 start */
+/**
+ * 提交行查信息记录
+ */
+var checkSubmitBaggageAddPage = function () {
+    var checkButton = $("#baggageAddButton");
+    checkButton.attr("disabled", "disabled");
+    if ($("#flightNumber").val() == null) {
+        checkButton.removeAttr("disabled");
+        alert("请选择航班！");
+        return false;
+    }
+    // 行李车发车时间
+    var inPlaceTime = $("#inPlaceTime");
+    if (inPlaceTime.val() === "") {
+        alert("请填写行李车发车时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 传送带到位时间
+    var usedTime = $("#usedTime");
+    if (usedTime.val() === "") {
+        alert("请填写传送带到位时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 组装数据
+    var postData = {};
+    postData.flightInformationId = $('#flightNumber option:selected').val();
+    postData.arrivedTime = new Date(inPlaceTime.val()).getTime();
+    postData.readyTime = new Date(usedTime.val()).getTime();
+    postData.specialCase = $("#specialCircumstances").val();
+    postRequest("/baggage/add", postData, checkButton, "/baggage/list");
+    checkButton.removeAttr("disabled");
+};
+
+/**
+ * 修改行查信息
+ */
+var checkSubmitBaggageModifyPage = function () {
+    var checkButton = $("#baggageModifyButton");
+    checkButton.attr("disabled", "disabled");
+    // 行李车发车时间
+    var inPlaceTime = $("#inPlaceTime");
+    if (inPlaceTime.val() === "") {
+        alert("请填写行李车发车时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 传送带到位时间
+    var usedTime = $("#usedTime");
+    if (usedTime.val() === "") {
+        alert("请填写传送带到位时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 组装数据
+    var postData = {};
+    postData.id = $('#recordId').val();
+    postData.arrivedTime = new Date(inPlaceTime.val()).getTime();
+    postData.readyTime = new Date(usedTime.val()).getTime();
+    postData.specialCase = $("#specialCircumstances").val();
+    postRequest("/baggage/modify", postData, checkButton, "/baggage/list");
+    checkButton.removeAttr("disabled");
+};
+/* 行查信息服务 end */
+
+/*  货运信息 start */
+var checkSubmitFreightAddPage = function () {
+    var checkButton = $("#freightAddButton");
+    checkButton.attr("disabled", "disabled");
+    if ($("#flightNumber").val() == null) {
+        checkButton.removeAttr("disabled");
+        alert("请选择航班！");
+        return false;
+    }
+    // 关闭货仓时间
+    var closeTime = $("#closeTime");
+    if (closeTime.val() === "") {
+        alert("请填写关闭货仓时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 组装数据
+    var postData = {};
+    postData.flightInformationId = $('#flightNumber option:selected').val();
+    postData.closeTime = new Date(closeTime.val()).getTime();
+    postData.specialCase = $("#specialCircumstances").val();
+    postRequest("/freight/add", postData, checkButton, "/freight/list");
+    checkButton.removeAttr("disabled");
+};
+
+var checkSubmitFreightModifyPage = function () {
+    var checkButton = $("#freightModifyButton");
+    checkButton.attr("disabled", "disabled");
+    // 关闭货仓时间
+    var closeTime = $("#closeTime");
+    if (closeTime.val() === "") {
+        alert("请填写关闭货仓时间！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    // 组装数据
+    var postData = {};
+    postData.id = $('#recordId').val();
+    postData.closeTime = new Date(closeTime.val()).getTime();
+    postData.specialCase = $("#specialCircumstances").val();
+    postRequest("/freight/modify", postData, checkButton, "/freight/list");
+    checkButton.removeAttr("disabled");
+};
+/*  货运信息 end */

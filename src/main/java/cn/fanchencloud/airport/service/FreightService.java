@@ -1,6 +1,9 @@
 package cn.fanchencloud.airport.service;
 
 import cn.fanchencloud.airport.entity.Freight;
+import cn.fanchencloud.airport.model.FreightRecord;
+
+import java.util.List;
 
 /**
  * Created by handsome programmer.
@@ -37,4 +40,20 @@ public interface FreightService {
      * @return 添加结果
      */
     boolean deleteRecord(int id);
+
+    /**
+     * 查询最近的货运信息记录
+     *
+     * @param currentDays 时间限制
+     * @return 查询结果
+     */
+    List<FreightRecord> getCurrentRecords(int currentDays);
+
+    /**
+     * 根据id 查询货运信息记录
+     *
+     * @param id 记录id
+     * @return 查询结果
+     */
+    FreightRecord getCheckInRecordById(int id);
 }

@@ -114,7 +114,9 @@ public class FlightInformationServiceImpl implements FlightInformationService {
 
     @Override
     public List<FlightInformation> queryFreightDataWithinCurrentDaysNoMarked(int currentDay) {
-        return null;
+        List<Freight> freightList = freightMapper.getCurrentRecord(currentDay);
+        List<Integer> ids = freightList.stream().map(Freight::getFlightInformationId).collect(Collectors.toList());
+        return queryDataWithinOneDay(ids);
     }
 
     @Override

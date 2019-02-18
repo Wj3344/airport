@@ -2,15 +2,16 @@ package cn.fanchencloud.airport.controller;
 
 import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.entity.Freight;
+import cn.fanchencloud.airport.model.FreightRecord;
+import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.FlightInformationService;
 import cn.fanchencloud.airport.service.FreightService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
@@ -27,6 +28,16 @@ import java.util.List;
 @Controller
 @RequestMapping(value = "/freight")
 public class FreightController {
+    /**
+     * 日志记录器
+     */
+    private static final Logger logger = LoggerFactory.getLogger(FreightController.class);
+
+    /**
+     * 时间限制
+     */
+    private int currentDays = 7;
+
 
     /**
      * 注入航班信息服务
@@ -46,7 +57,7 @@ public class FreightController {
      */
     @GetMapping(value = "/add")
     public String addFreight(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryFreightDataWithinCurrentDaysNoMarked(7);
+        List<FlightInformation> flightInformationList = flightInformationService.queryFreightDataWithinCurrentDaysNoMarked(currentDays);
         model.addAttribute("flightInformationList", flightInformationList);
         return "freight";
     }
@@ -58,18 +69,56 @@ public class FreightController {
      */
     @ResponseBody
     @PostMapping(value = "/add")
-    public String addFreight(int flightInformationId, String closeTime, String specialCase) {
-        Freight freight = new Freight();
-        freight.setFlightInformationId(flightInformationId);
-        freight.setCloseTime(new Date(Long.parseLong(closeTime)));
-        freight.setSpecialCase(specialCase);
+    public JsonResponse addFreight(Freight freight) {
         // 将上传的数据持久化到数据库
-        boolean result = freightService.addRecord(freight);
-        if (result) {
+        if (freightService.addRecord(freight)) {
             // 添加成功
-            return "OK，添加货运信息成功";
+            return JsonResponse.ok();
         } else {
-            return "ERROR，添加货运信息失败";
+            return JsonResponse.errorMsg("ERROR，添加货运信息失败");
+        }
+    }
+
+    /**
+     * 请求跳转到货运信息添加页面
+     *
+     * @param model 模型
+     * @return 页面跳转
+     */
+    @GetMapping("list")
+    public String listFreight(Model model) {
+        List<FreightRecord> freightRecordList = freightService.getCurrentRecords(currentDays);
+        model.addAttribute("freightRecordList", freightRecordList);
+        return "freightList";
+    }
+
+    /**
+     * 请求获取一个修改的页面的记录信息
+     *
+     * @param model 模型
+     * @param id    记录id
+     * @return 查询结果并跳转页面
+     */
+    @GetMapping(value = "/modify/{id}")
+    public String modify(Model model, @PathVariable("id") int id) {
+        FreightRecord freightRecord = freightService.getCheckInRecordById(id);
+        model.addAttribute("freightRecord", freightRecord);
+        return "freightModify";
+    }
+
+    /**
+     * 请求修改一条货运记录
+     *
+     * @param freight 货运信息
+     * @return 修改结果
+     */
+    @PostMapping("/modify")
+    @ResponseBody
+    public JsonResponse modify(Freight freight) {
+        if (freightService.updateRecord(freight)) {
+            return JsonResponse.ok();
+        } else {
+            return JsonResponse.errorMsg("修改失败！");
         }
     }
 
