@@ -44,7 +44,7 @@ public class BaggageController {
 
     @GetMapping(value = "/add")
     public String addBaggage(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryBaggageDataWithinCurrentDaysNoMarked(7);
+        List<FlightInformation> flightInformationList = flightInformationService.queryBaggageDataWithinCurrentDaysNoMarked(currentDays);
         model.addAttribute("flightInformationList", flightInformationList);
         return "baggage";
     }

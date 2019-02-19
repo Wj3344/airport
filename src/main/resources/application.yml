@@ -2,7 +2,7 @@ spring:
   datasource:
     druid:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://118.89.54.91:3306/airport?useSSL=false&?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true
+      url: jdbc:mysql://localhost:3306/airport?useSSL=false&?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&createDatabaseIfNotExist=true
       username: root
       password: wj1012
       # 连接池配置

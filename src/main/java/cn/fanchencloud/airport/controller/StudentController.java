@@ -4,10 +4,7 @@ import cn.fanchencloud.airport.entity.Student;
 import cn.fanchencloud.airport.service.StudentService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by handsome programmer.
@@ -19,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author chen
  */
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/user")
 public class StudentController {
     private StudentService studentService;
 
@@ -44,6 +41,27 @@ public class StudentController {
         } else {
             return "添加成功";
         }
+    }
+
+    @RequiresPermissions("user:user")
+    @GetMapping("/")
+    @ResponseBody
+    public String test() {
+        return "测试普通！";
+    }
+
+    @RequiresPermissions("user:add")
+    @GetMapping("/add")
+    @ResponseBody
+    public String testAdd() {
+        return "测试添加！";
+    }
+
+    @RequiresPermissions("user:delete")
+    @GetMapping("/delete")
+    @ResponseBody
+    public String testDelete() {
+        return "测试删除！";
     }
 
     @Autowired
