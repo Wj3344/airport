@@ -2,17 +2,21 @@ package cn.fanchencloud.airport.controller;
 
 import cn.fanchencloud.airport.entity.Admin;
 import cn.fanchencloud.airport.entity.ErrorMessage;
-import cn.fanchencloud.airport.entity.ResponseMessage;
+import cn.fanchencloud.airport.entity.Identity;
+import cn.fanchencloud.airport.model.JsonResponse;
+import cn.fanchencloud.airport.service.IdentityService;
 import cn.fanchencloud.airport.utils.MD5Utils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * Created by handsome programmer.
@@ -25,6 +29,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class LoginController {
+
+    /**
+     * 注入账号等级服务
+     */
+    private IdentityService identityService;
 
     /**
      * 返回登录页面
@@ -62,8 +71,34 @@ public class LoginController {
     }
 
     @RequestMapping("/index")
-    public String index() {
+    public String index(Model model) {
+        Admin admin = (Admin) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("admin", admin);
         return "index";
+    }
+
+    /**
+     * 请求跳转到添加账号信息的界面
+     *
+     * @param model 模型
+     * @return 页面跳转
+     */
+    @GetMapping(value = "/signUp")
+    public String signUp(Model model) {
+        List<Identity> identityList = identityService.getIdentityList();
+        model.addAttribute("identityList", identityList);
+        return "signUp";
+    }
+
+    /**
+     * 请求添加一个账号
+     *
+     * @param admin 账号信息
+     * @return 添加结果
+     */
+    @PostMapping(value = "/signUp")
+    public JsonResponse signUp(Admin admin) {
+        return JsonResponse.ok();
     }
 
     @RequestMapping(value = "/errorPage")
@@ -77,4 +112,8 @@ public class LoginController {
         return "errorPage";
     }
 
+    @Autowired
+    public void setIdentityService(IdentityService identityService) {
+        this.identityService = identityService;
+    }
 }
