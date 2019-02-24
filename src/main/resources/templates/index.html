@@ -14,6 +14,9 @@
     <!--[if lt IE 9]>
     <meta http-equiv="refresh" content="0;ie.html"/>
     <![endif]-->
+    <script>if (window.top !== window.self) {
+        window.top.location = window.location;
+    }</script>
 
     <link rel="shortcut icon" th:href="@{/favicon.ico}">
     <link th:href="@{/css/bootstrap.min.css(v=3.3.6)}" rel="stylesheet">
@@ -36,13 +39,14 @@
                                 <span class="clear">
                                     <span class="block m-t-xs" style="font-size:20px;">
                                         <i class=" fa fa-area-chart"></i>
-                                        <strong class="font-bold">Admin</strong>
+                                        <strong class="font-bold">[[${admin.username}]]</strong>
                                     </span>
                                 </span>
                         </a>
                     </div>
                     <div class="logo-element">hAdmin</div>
                 </li>
+                <!-- 主页 start -->
                 <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">分类</span>
                 </li>
@@ -52,6 +56,9 @@
                         <span class="nav-label">主页</span>
                     </a>
                 </li>
+                <!-- 主页 end -->
+
+                <!-- 次日航班信息录入 start -->
                 <li th:if="${admin.identity} == 0" class="line dk"></li>
                 <li th:if="${admin.identity} == 0" class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">次日航班信息</span>
@@ -61,18 +68,42 @@
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">次日航班信息录入</span>
                     </a>
-                    <a class="J_menuItem" th:href="@{/registration/search}">
+                    <a class="J_menuItem" th:href="@{/registration/list}">
                         <i class="fa fa-file-text"></i>
                         <span class="nav-label">次日航班信息查询</span>
                     </a>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0" class="line dk"></li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0"
+                <!-- 次日航班信息 end -->
+
+                <!-- 用户操作 start -->
+                <li class="line dk"></li>
+                <li class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                    <span class="ng-scope">用户操作</span>
+                </li>
+                <li>
+                    <a th:if="${admin.identity} == 0" class="J_menuItem" th:href="@{/signUp}">
+                        <i class="fa fa-edit"></i>
+                        <span class="nav-label">注册用户</span>
+                    </a>
+                    <a th:if="${admin.identity} == 0" class="J_menuItem" th:href="@{/admin/list}">
+                        <i class="fa fa-edit"></i>
+                        <span class="nav-label">用户列表</span>
+                    </a>
+                    <a th:if="${admin.identity} == 0" class="J_menuItem" th:href="@{/admin/downloadData}">
+                        <i class="fa fa-edit"></i>
+                        <span class="nav-label">导出数据</span>
+                    </a>
+                </li>
+                <!-- 用户操作 end -->
+
+                <!-- 值机信息 start -->
+                <li th:if="${admin.identity} == 1 or ${admin.identity} == 2" class="line dk"></li>
+                <li th:if="${admin.identity} == 1 or ${admin.identity} == 2"
                     class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">值机信息</span>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0">
-                    <a class="J_menuItem" th:href="@{/checkIn/add}">
+                <li th:if="${admin.identity} == 1 or ${admin.identity} == 2">
+                    <a th:if="${admin.identity} == 1" class="J_menuItem" th:href="@{/checkIn/add}">
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">值机信息录入</span>
                     </a>
@@ -81,12 +112,16 @@
                         <span class="nav-label">值机信息查询</span>
                     </a>
                 </li>
-                <li th:if="${admin.identity} == 2" class="line dk"></li>
-                <li th:if="${admin.identity} == 1" class="hidden-folded padder m-t m-b-sm text-muted text-xs">
+                <!-- 值机信息 end -->
+
+                <!-- 清洁信息 start -->
+                <li th:if="${admin.identity} == 3 or ${admin.identity} == 4" class="line dk"></li>
+                <li th:if="${admin.identity} == 3 or ${admin.identity} == 4"
+                    class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">清洁信息</span>
                 </li>
-                <li th:if="${admin.identity} == 1">
-                    <a class="J_menuItem" th:href="@{/clean/add}">
+                <li th:if="${admin.identity} == 3 or ${admin.identity} == 4">
+                    <a th:if="${admin.identity} == 3" class="J_menuItem" th:href="@{/clean/add}">
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">清洁信息录入</span>
                     </a>
@@ -95,14 +130,16 @@
                         <span class="nav-label">清洁信息查询</span>
                     </a>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0" class="line dk"></li>
+                <!-- 清洁信息 end -->
+
                 <!-- 站坪车辆 start -->
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0"
+                <li th:if="${admin.identity} == 5 or ${admin.identity} == 6" class="line dk"></li>
+                <li th:if="${admin.identity} == 5 or ${admin.identity} == 6"
                     class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">站坪车辆</span>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0">
-                    <a class="J_menuItem" th:href="@{/standCar/add}">
+                <li th:if="${admin.identity} == 5 or ${admin.identity} == 6">
+                    <a th:if="${admin.identity} == 5" class="J_menuItem" th:href="@{/standCar/add}">
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">站坪车辆信息录入</span>
                     </a>
@@ -111,16 +148,16 @@
                         <span class="nav-label">站坪车辆信息查询</span>
                     </a>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0" class="line dk"></li>
                 <!-- 站坪车辆 end-->
 
                 <!-- 综服 start -->
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0"
+                <li th:if="${admin.identity} == 7 or ${admin.identity} == 8" class="line dk"></li>
+                <li th:if="${admin.identity} == 7 or ${admin.identity} == 8"
                     class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">综服</span>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0">
-                    <a class="J_menuItem" th:href="@{/integratedService/add}">
+                <li th:if="${admin.identity} == 7 or ${admin.identity} == 8">
+                    <a th:if="${admin.identity} == 7" class="J_menuItem" th:href="@{/integratedService/add}">
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">综服信息录入</span>
                     </a>
@@ -129,16 +166,16 @@
                         <span class="nav-label">综服信息查询</span>
                     </a>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0" class="line dk"></li>
                 <!-- 综服 end -->
 
                 <!-- 行查 start -->
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0"
+                <li th:if="${admin.identity} == 9 or ${admin.identity} == 10" class="line dk"></li>
+                <li th:if="${admin.identity} == 9 or ${admin.identity} == 10"
                     class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">行查</span>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0">
-                    <a class="J_menuItem" th:href="@{/baggage/add}">
+                <li th:if="${admin.identity} == 9 or ${admin.identity} == 10">
+                    <a th:if="${admin.identity} == 9" class="J_menuItem" th:href="@{/baggage/add}">
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">行查信息录入</span>
                     </a>
@@ -147,16 +184,16 @@
                         <span class="nav-label">行查服信息查询</span>
                     </a>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0" class="line dk"></li>
                 <!-- 行查 end -->
 
                 <!-- 货运 start -->
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0"
+                <li th:if="${admin.identity} == 11 or ${admin.identity} == 12" class="line dk"></li>
+                <li th:if="${admin.identity} == 11 or ${admin.identity} == 12"
                     class="hidden-folded padder m-t m-b-sm text-muted text-xs">
                     <span class="ng-scope">货运</span>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0">
-                    <a class="J_menuItem" th:href="@{/freight/add}">
+                <li th:if="${admin.identity} == 11 or ${admin.identity} == 12">
+                    <a th:if="${admin.identity} == 11" class="J_menuItem" th:href="@{/freight/add}">
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">货运信息录入</span>
                     </a>
@@ -165,7 +202,6 @@
                         <span class="nav-label">货运服信息查询</span>
                     </a>
                 </li>
-                <li th:if="${admin.identity} == 1 or ${admin.identity} == 0" class="line dk"></li>
                 <!-- 货运 end -->
             </ul>
         </div>

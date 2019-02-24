@@ -8,6 +8,7 @@ import cn.fanchencloud.airport.model.Registration;
 import cn.fanchencloud.airport.service.RegistrationService;
 import com.alibaba.fastjson.JSON;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class RegistrationController {
      * @param registration 航班信息
      * @return 添加结果
      */
+    @RequiresPermissions("registration:add")
     @ResponseBody
     @PostMapping(value = "/add")
     public JsonResponse addRegistration(String registration) {
@@ -64,6 +66,7 @@ public class RegistrationController {
      *
      * @return 次日航班信息录入
      */
+    @RequiresPermissions("registration:add")
     @GetMapping(value = "/add")
     public String registration(Model model) {
         // 获取所有的重点旅客标签
@@ -80,7 +83,8 @@ public class RegistrationController {
      *
      * @return 页面返回
      */
-    @GetMapping(value = "/search")
+    @RequiresPermissions("registration:list")
+    @GetMapping(value = "/list")
     public String getSearchPage(Model model) {
         // 查询次日航班信息
         List<FlightInformation> flightInformationList = registrationService.getAllRegistration();
@@ -95,6 +99,7 @@ public class RegistrationController {
      * @param model 模型
      * @return 页面
      */
+    @RequiresPermissions("registration:modify")
     @GetMapping(value = "/modify/{id}")
     public String getModifyPage(@PathVariable("id") int id, Model model) {
         // 查询该条信息
@@ -115,6 +120,7 @@ public class RegistrationController {
      * @param dataMessage 修改的次日航班信息记录
      * @return 处理结果
      */
+    @RequiresPermissions("registration:modify")
     @PostMapping("/modify")
     @ResponseBody
     public JsonResponse modifyRegistration(String dataMessage) {

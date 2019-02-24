@@ -6,6 +6,7 @@ import cn.fanchencloud.airport.model.FreightRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.FlightInformationService;
 import cn.fanchencloud.airport.service.FreightService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +55,7 @@ public class FreightController {
      * @param model 模型
      * @return 页面跳转
      */
+    @RequiresPermissions("freight:add")
     @GetMapping(value = "/add")
     public String addFreight(Model model) {
         List<FlightInformation> flightInformationList = flightInformationService.queryFreightDataWithinCurrentDaysNoMarked(currentDays);
@@ -67,6 +68,7 @@ public class FreightController {
      *
      * @return 添加结果返回
      */
+    @RequiresPermissions("freight:add")
     @ResponseBody
     @PostMapping(value = "/add")
     public JsonResponse addFreight(Freight freight) {
@@ -85,6 +87,7 @@ public class FreightController {
      * @param model 模型
      * @return 页面跳转
      */
+    @RequiresPermissions("freight:list")
     @GetMapping("list")
     public String listFreight(Model model) {
         List<FreightRecord> freightRecordList = freightService.getCurrentRecords(currentDays);
@@ -99,6 +102,7 @@ public class FreightController {
      * @param id    记录id
      * @return 查询结果并跳转页面
      */
+    @RequiresPermissions("freight:modify")
     @GetMapping(value = "/modify/{id}")
     public String modify(Model model, @PathVariable("id") int id) {
         FreightRecord freightRecord = freightService.getCheckInRecordById(id);
@@ -112,6 +116,7 @@ public class FreightController {
      * @param freight 货运信息
      * @return 修改结果
      */
+    @RequiresPermissions("freight:modify")
     @PostMapping("/modify")
     @ResponseBody
     public JsonResponse modify(Freight freight) {

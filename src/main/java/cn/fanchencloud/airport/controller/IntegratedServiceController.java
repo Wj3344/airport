@@ -6,6 +6,7 @@ import cn.fanchencloud.airport.model.IntegratedServiceRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.FlightInformationService;
 import cn.fanchencloud.airport.service.IntegratedServiceService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,6 +55,7 @@ public class IntegratedServiceController {
      * @param model 模型
      * @return 页面跳转
      */
+    @RequiresPermissions("integratedService:add")
     @GetMapping(value = "/add")
     public String addIntegratedService(Model model) {
         List<FlightInformation> flightInformationList = flightInformationService.queryIntegratedServiceDataWithinCurrentDaysNoMarked(currentDay);
@@ -69,6 +70,7 @@ public class IntegratedServiceController {
      * @param integratedService 综合服务信息
      * @return 添加结果
      */
+    @RequiresPermissions("integratedService:add")
     @ResponseBody
     @PostMapping(value = "/add")
     public JsonResponse addIntegratedService(IntegratedService integratedService) {
@@ -86,6 +88,7 @@ public class IntegratedServiceController {
      * @param model 模型
      * @return 页面跳转
      */
+    @RequiresPermissions("integratedService:list")
     @GetMapping(value = "/list")
     public String list(Model model) {
         List<IntegratedServiceRecord> integratedServiceRecordList = integratedServiceService.getCurrentRecord(currentDay);
@@ -100,6 +103,7 @@ public class IntegratedServiceController {
      * @param id    记录id
      * @return 页面跳转
      */
+    @RequiresPermissions("integratedService:modify")
     @GetMapping(value = "/modify/{id}")
     public String modify(Model model, @PathVariable("id") int id) {
         IntegratedServiceRecord integratedServiceRecord = integratedServiceService.getRecordById(id);
@@ -113,6 +117,7 @@ public class IntegratedServiceController {
      * @param integratedService 综合服务信息
      * @return 修改结果
      */
+    @RequiresPermissions("integratedService:modify")
     @PostMapping(value = "/modify")
     @ResponseBody
     public JsonResponse modify(IntegratedService integratedService) {

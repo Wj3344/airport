@@ -1,13 +1,12 @@
 package cn.fanchencloud.airport.controller;
 
-import cn.fanchencloud.airport.entity.Baggage;
 import cn.fanchencloud.airport.entity.Clean;
 import cn.fanchencloud.airport.entity.FlightInformation;
 import cn.fanchencloud.airport.model.CleanRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
-import cn.fanchencloud.airport.service.BaggageService;
 import cn.fanchencloud.airport.service.CleanService;
 import cn.fanchencloud.airport.service.FlightInformationService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,6 +55,7 @@ public class CleanController {
      * @param model 模型
      * @return 跳转地址
      */
+    @RequiresPermissions("clean:add")
     @GetMapping(value = "/add")
     public String addClean(Model model) {
         List<FlightInformation> flightInformationList = flightInformationService.queryCleanDataWithinCurrentDaysNoMarked(currentDay);
@@ -70,6 +69,7 @@ public class CleanController {
      * @param clean 添加信息
      * @return 添加结果
      */
+    @RequiresPermissions("clean:add")
     @ResponseBody
     @PostMapping(value = "/add")
     public JsonResponse addClean(Clean clean) {
@@ -88,6 +88,7 @@ public class CleanController {
      * @param model 模型
      * @return 页面跳转
      */
+    @RequiresPermissions("clean:list")
     @GetMapping(value = "/list")
     public String listClean(Model model) {
         // 查询记录
@@ -96,6 +97,7 @@ public class CleanController {
         return "cleanList";
     }
 
+    @RequiresPermissions("clean:modify")
     @GetMapping(value = "/modify/{id}")
     public String modifyPage(@PathVariable("id") int id, Model model) {
         CleanRecord cleanRecord = cleanService.getCleanRecordById(id);
@@ -103,6 +105,7 @@ public class CleanController {
         return "cleanModify";
     }
 
+    @RequiresPermissions("clean:modify")
     @PostMapping(value = "/modify")
     @ResponseBody
     public JsonResponse modifyClean(Clean clean) {

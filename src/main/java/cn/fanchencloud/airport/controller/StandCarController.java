@@ -6,12 +6,12 @@ import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.model.StandCarRecord;
 import cn.fanchencloud.airport.service.FlightInformationService;
 import cn.fanchencloud.airport.service.StandCarService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,9 +48,10 @@ public class StandCarController {
      * @param model 模型
      * @return 页面跳转
      */
+    @RequiresPermissions("standCar:add")
     @GetMapping(value = "/add")
     public String addStandCar(Model model) {
-        List<FlightInformation> flightInformationList = flightInformationService.queryStandCarDataWithinCurrentDaysNoMarked(7);
+        List<FlightInformation> flightInformationList = flightInformationService.queryStandCarDataWithinCurrentDaysNoMarked(currentDay);
         model.addAttribute("flightInformationList", flightInformationList);
         return "standCar";
     }
@@ -61,6 +62,7 @@ public class StandCarController {
      * @param standCar 站坪信息
      * @return 添加结果
      */
+    @RequiresPermissions("standCar:add")
     @PostMapping(value = "/add")
     @ResponseBody
     public JsonResponse addStandCar(StandCar standCar) {
@@ -79,6 +81,7 @@ public class StandCarController {
      * @param model 模型
      * @return 返回页面
      */
+    @RequiresPermissions("standCar:list")
     @GetMapping(value = "/list")
     public String listPage(Model model) {
         // 查询记录
@@ -94,6 +97,7 @@ public class StandCarController {
      * @param id    记录id
      * @return 页面返回
      */
+    @RequiresPermissions("standCar:modify")
     @GetMapping(value = "/modify/{id}")
     public String modify(Model model, @PathVariable(value = "id") int id) {
         StandCarRecord standCarRecord = standCarService.getRecordById(id);
@@ -102,6 +106,7 @@ public class StandCarController {
     }
 
 
+    @RequiresPermissions("standCar:modify")
     @PostMapping(value = "/modify")
     @ResponseBody
     public JsonResponse modify(StandCar standCar) {

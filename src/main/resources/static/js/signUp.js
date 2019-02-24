@@ -27,7 +27,7 @@ var checkSignUpFunction = function () {
         success: function (response) {
             alert(response.msg);
             if (response.status === 200) {
-                window.location.href = "/login";
+                window.location.href = "/index";
             }
         },
         error: function (xhr) {

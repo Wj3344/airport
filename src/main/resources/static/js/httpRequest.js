@@ -415,3 +415,21 @@ var checkSubmitFreightModifyPage = function () {
     checkButton.removeAttr("disabled");
 };
 /*  货运信息 end */
+/* 用户信息 start */
+var checkSubmitAdminModifyPage = function () {
+    var checkButton = $("#adminModifyButton");
+    checkButton.attr("disabled", "disabled");
+    var newPassword = $("#password");
+    var repeatPassword = $("#re-password");
+    if (!(newPassword.val() === repeatPassword.val())) {
+        alert("两次填写的密码不一致！请重新填写！");
+        checkButton.removeAttr("disabled");
+        return false;
+    }
+    var postData = {};
+    postData.username = $('#username').val();
+    postData.password = newPassword.val();
+    postRequest("/admin/modify", postData, checkButton, "/admin/list");
+    checkButton.removeAttr("disabled");
+};
+/* 用户信息 end */

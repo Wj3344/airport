@@ -6,6 +6,7 @@ import cn.fanchencloud.airport.model.BaggageRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.BaggageService;
 import cn.fanchencloud.airport.service.FlightInformationService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,7 @@ public class BaggageController {
      */
     private BaggageService baggageService;
 
+    @RequiresPermissions("baggage:add")
     @GetMapping(value = "/add")
     public String addBaggage(Model model) {
         List<FlightInformation> flightInformationList = flightInformationService.queryBaggageDataWithinCurrentDaysNoMarked(currentDays);
@@ -49,6 +51,7 @@ public class BaggageController {
         return "baggage";
     }
 
+    @RequiresPermissions("baggage:add")
     @ResponseBody
     @PostMapping(value = "/add")
     public JsonResponse addBaggage(Baggage baggage) {
@@ -66,6 +69,7 @@ public class BaggageController {
      * @param model 模型
      * @return 页面跳转
      */
+    @RequiresPermissions("baggage:list")
     @GetMapping(value = "/list")
     public String getBaggageList(Model model) {
         List<BaggageRecord> baggageRecordList = baggageService.getCurrentRecords(currentDays);
@@ -80,6 +84,7 @@ public class BaggageController {
      * @param id    信息记录id
      * @return 页面跳转
      */
+    @RequiresPermissions("baggage:modify")
     @GetMapping(value = "/modify/{id}")
     public String modifyPage(Model model, @PathVariable("id") int id) {
         BaggageRecord baggageRecord = baggageService.getCheckInRecordById(id);
@@ -93,6 +98,7 @@ public class BaggageController {
      * @param baggage 修改后的行查记录
      * @return 修改结果
      */
+    @RequiresPermissions("baggage:modify")
     @PostMapping(value = "/modify")
     @ResponseBody
     public JsonResponse modify(Baggage baggage) {

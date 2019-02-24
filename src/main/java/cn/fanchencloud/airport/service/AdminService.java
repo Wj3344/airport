@@ -1,6 +1,9 @@
 package cn.fanchencloud.airport.service;
 
 import cn.fanchencloud.airport.entity.Admin;
+import cn.fanchencloud.airport.model.AdminRecord;
+
+import java.util.List;
 
 /**
  * Created by handsome programmer.
@@ -35,7 +38,7 @@ public interface AdminService {
      * @param admin 更新的管理员信息
      * @return 更新结果
      */
-    int update(Admin admin);
+    boolean update(Admin admin);
 
     /**
      * 删除一个管理员帐号
@@ -43,7 +46,7 @@ public interface AdminService {
      * @param username 学生学号
      * @return 删除结果
      */
-    int deleteAdmin(String username);
+    boolean deleteAdmin(String username);
 
     /**
      * 查询该用户是否存在
@@ -60,4 +63,19 @@ public interface AdminService {
      * @return 用户等级
      */
     int queryIdentity(String username);
+
+    /**
+     * 获取所有的管理员账号
+     *
+     * @return 账号列表
+     */
+    List<AdminRecord> getAllList();
+
+    /**
+     * 根据用户名查询用户信息
+     *
+     * @param username 用户名
+     * @return 用户详情
+     */
+    Admin getAdminByUsername(String username);
 }

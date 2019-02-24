@@ -177,7 +177,7 @@
         var recordID = $("#recordId").val();
         if (!isNull(recordID)) {
             console.log("信息有误！");
-            alert("系统出错！正在重定向。")
+            alert("系统出错！正在重定向。");
             // 重定向到当前页面
             window.location.href = "/registration/modify";
             return false;
@@ -258,9 +258,9 @@
                 console.log("返回的数据: " + response.data);
                 if (response.status === 200) {
                     // 请求成功
-                    alert("记录添加成功,现在返回！");
+                    alert("记录修改成功,现在返回！");
                     // 数据修改成功，重新跳转回查询界面
-                    window.location.href = "/registration/search";
+                    window.location.href = "/registration/list";
                 } else {
                     alert("修改失败，请稍后重试！");
                 }

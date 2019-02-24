@@ -6,6 +6,7 @@ import cn.fanchencloud.airport.model.CheckInRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.CheckInService;
 import cn.fanchencloud.airport.service.FlightInformationService;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,7 @@ public class CheckInController {
      * @param model 模型
      * @return 页面跳转
      */
+    @RequiresPermissions("checkIn:add")
     @GetMapping(value = "/add")
     public String addBaggage(Model model) {
         List<FlightInformation> flightInformationList = flightInformationService.queryCheckInDataWithinCurrentDaysNoMarked(currentDays);
@@ -60,6 +62,7 @@ public class CheckInController {
         return "checkIn";
     }
 
+    @RequiresPermissions("checkIn:add")
     @ResponseBody
     @PostMapping(value = "/add")
     public JsonResponse addBaggage(CheckIn checkIn) {
@@ -79,7 +82,8 @@ public class CheckInController {
      * @param model 模型
      * @return 页面数据填充跳转
      */
-    @GetMapping(value = "/search")
+    @RequiresPermissions("checkIn:list")
+    @GetMapping(value = "/list")
     public String searchPage(Model model) {
         // 获取最近的值机记录添加到模型中
         List<CheckInRecord> checkInRecordList = checkInService.getCurrentRecords(currentDays);
@@ -87,6 +91,7 @@ public class CheckInController {
         return "checkInSearch";
     }
 
+    @RequiresPermissions("checkIn:modify")
     @GetMapping(value = "/modify/{id}")
     public String modifyPage(Model model, @PathVariable("id") int id) {
         CheckInRecord checkInRecord = checkInService.getCheckInRecordById(id);
@@ -100,6 +105,7 @@ public class CheckInController {
      * @param checkIn 值机信息记录
      * @return 修改结果
      */
+    @RequiresPermissions("checkIn:modify")
     @PostMapping(value = "/modify")
     @ResponseBody
     public JsonResponse modifyCheckIn(CheckIn checkIn) {

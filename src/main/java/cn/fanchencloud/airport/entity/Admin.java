@@ -14,6 +14,11 @@ import java.io.Serializable;
 public class Admin implements Serializable {
 
     private static final long serialVersionUID = -5557991673697530680L;
+
+    /**
+     * 账号记录id
+     */
+    private int id;
     /**
      * 用户名（用户账号）
      */
@@ -41,10 +46,23 @@ public class Admin implements Serializable {
     @Override
     public String toString() {
         return "Admin{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", identity=" + identity +
                 '}';
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

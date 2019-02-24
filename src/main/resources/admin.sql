@@ -32,6 +32,7 @@ DROP TABLE IF EXISTS `admin`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
  SET character_set_client = utf8mb4 ;
 CREATE TABLE `admin` (
+  `id` int not null auto_increment comment '记录id',
   `username` varchar(200) NOT NULL COMMENT '用户名',
   `password` varchar(200) NOT NULL COMMENT '密码',
   `identity` int(11) NOT NULL COMMENT '账户等级',

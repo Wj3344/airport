@@ -43,7 +43,7 @@ public class MD5Utils {
 
     public static void main(String[] args) {
         //得到测试数据
-        System.out.println(MD5Utils.encrypt("admin","123456"));
+        System.out.println(MD5Utils.encrypt("fanchen0","123456"));
         System.out.println(MD5Utils.encrypt("123456"));
     }
 }

@@ -4,6 +4,8 @@ import cn.fanchencloud.airport.entity.Admin;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * Created by handsome programmer.
  * User: chen
@@ -73,4 +75,12 @@ public interface AdminMapper {
             @Result(property = "identity", column = "identity", javaType = Integer.class)
     })
     Admin queryAdmin(String username);
+
+    /**
+     * 查询所有的管理员账号
+     *
+     * @return 账号列表
+     */
+    @Select("select `username`, `password`,`identity` from admin where `identity` != 0")
+    List<Admin> queryAllAdmin();
 }
