@@ -72,6 +72,10 @@
                         <i class="fa fa-file-text"></i>
                         <span class="nav-label">次日航班信息查询</span>
                     </a>
+                    <a th:if="${admin.identity} == 0" class="J_menuItem" th:href="@{/admin/downloadData}">
+                        <i class="fa fa-edit"></i>
+                        <span class="nav-label">导出数据</span>
+                    </a>
                 </li>
                 <!-- 次日航班信息 end -->
 
@@ -89,9 +93,10 @@
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">用户列表</span>
                     </a>
-                    <a th:if="${admin.identity} == 0" class="J_menuItem" th:href="@{/admin/downloadData}">
+                    <a th:if="${admin.identity} == 0" class="J_menuItem"
+                       th:href="@{'/admin/modify/' + ${admin.username}}">
                         <i class="fa fa-edit"></i>
-                        <span class="nav-label">导出数据</span>
+                        <span class="nav-label">修改密码</span>
                     </a>
                 </li>
                 <!-- 用户操作 end -->

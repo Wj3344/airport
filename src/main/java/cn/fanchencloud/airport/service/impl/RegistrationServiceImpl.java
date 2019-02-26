@@ -124,34 +124,10 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
-    @Transactional(rollbackFor = MyAddException.class)
     public boolean updateRegistration(Registration registrationModify) {
-        boolean flag = true;
         // 修改航班记录
-        int i = flightInformationMapper.updateRecord(registrationModify);
-        if (i == 0) {
-            // 修改航班记录失败，抛出异常
-            flag = false;
-            throw new MyAddException("修改航班信息失败");
-        }
-        // 添加两个标签的记录
-        logger.info("修改航班记录的特殊旅客标记 " + registrationModify.getPassengerTags().toString());
-        // 先删除之前保存的标签
-        flightInformationPassengerTagMapper.deleteByFlightId(registrationModify.getId());
-        flightInformationSpecialFlightMapper.deleteByFlightId(registrationModify.getId());
-        i = flightInformationPassengerTagMapper.addMany(registrationModify.getId(), registrationModify.getPassengerTags());
-        if (i == 0 && registrationModify.getPassengerTags().size() != 0) {
-            // 添加航班记录的特殊旅客标记失败，抛出异常
-            flag = false;
-            throw new MyAddException("添加航班记录的特殊旅客标记失败！");
-        }
-        i = flightInformationSpecialFlightMapper.addMany(registrationModify.getId(), registrationModify.getSpecialTags());
-        if (i == 0 && registrationModify.getSpecialTags().size() != 0) {
-            // 添加航班记录的特殊航班标记失败，抛出异常
-            flag = false;
-            throw new MyAddException("添加航班记录的特殊航班标记失败！");
-        }
-        return flag;
+       return flightInformationMapper.updateRecord(registrationModify) != 0;
+
     }
 
     @Autowired

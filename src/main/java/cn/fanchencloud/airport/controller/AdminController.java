@@ -13,6 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -48,21 +49,21 @@ public class AdminController {
         return "adminList";
     }
 
-    /**
-     * 删除一个账号
-     *
-     * @param username 用户名
-     * @return 删除结果
-     */
-    @RequiresPermissions("admin:delete")
-    @GetMapping(value = "/delete/{username}")
-    public JsonResponse deleteAdmin(@PathVariable("username") String username) {
-        if (adminService.deleteAdmin(username)) {
-            return JsonResponse.ok();
-        } else {
-            return JsonResponse.errorMsg("删除失败！");
-        }
-    }
+//    /**
+//     * 删除一个账号
+//     *
+//     * @param username 用户名
+//     * @return 删除结果
+//     */
+//    @RequiresPermissions("admin:delete")
+//    @GetMapping(value = "/delete/{username}")
+//    public JsonResponse deleteAdmin(@PathVariable("username") String username) {
+//        if (adminService.deleteAdmin(username)) {
+//            return JsonResponse.ok();
+//        } else {
+//            return JsonResponse.errorMsg("删除失败！");
+//        }
+//    }
 
     /**
      * 请求跳转到修改用户信息界面
@@ -79,6 +80,7 @@ public class AdminController {
     }
 
     @PostMapping(value = "/modify")
+    @ResponseBody
     public JsonResponse modifyAdmin(Admin admin) {
         Admin user = (Admin) SecurityUtils.getSubject().getPrincipal();
         if (user.getIdentity() != 0) {
@@ -91,6 +93,31 @@ public class AdminController {
         } else {
             return JsonResponse.errorMsg("修改失败！");
         }
+    }
+
+    /**
+     * 请求导出数据
+     *
+     * @return 页面跳转
+     */
+//    @RequiresPermissions()
+    @GetMapping(value = "/downloadData")
+    public String downloadData() {
+        return "downloadData";
+    }
+
+    /**
+     * 请求下载数据
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return 数据
+     */
+    @PostMapping(value = "/downloadData")
+    public void downloadData(Date startTime, Date endTime) {
+        System.out.println("开始时间：" + startTime);
+        System.out.println("结束时间：" + endTime);
+
     }
 
     @Autowired

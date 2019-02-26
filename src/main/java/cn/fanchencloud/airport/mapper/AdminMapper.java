@@ -81,6 +81,6 @@ public interface AdminMapper {
      *
      * @return 账号列表
      */
-    @Select("select `username`, `password`,`identity` from admin where `identity` != 0")
+    @Select("select `username`, `password`,`identity` from admin")
     List<Admin> queryAllAdmin();
 }
