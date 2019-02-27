@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -64,4 +65,20 @@ public interface BaggageMapper {
      */
     @Update("update baggage set arrivedTime = #{arrivedTime}, readyTime = #{readyTime}, specialCase = #{specialCase} where id = #{id}")
     int update(Baggage baggage);
+
+    /**
+     * 根据航班记录id查询值机信息记录
+     *
+     * @param ids 航班记录id列表
+     * @return 查询结果
+     */
+    @Select({"<script> ",
+            "select id, flightInformationId, arrivedTime, readyTime, specialCase, createTime from baggage where flightInformationId in ",
+            "<foreach collection='ids' item='item' index='index' open='(' close=')' separator=','>",
+            "(#{item})",
+            "</foreach>",
+            "</script> "
+    })
+    @MapKey("flightInformationId")
+    Map<Integer, Baggage> getRecordByIdList(@Param("ids") List<Integer> ids);
 }

@@ -36,6 +36,22 @@ public class ExcelUtils {
         // 创建工作簿
         HSSFSheet sheet = workbook.createSheet("时间节点记录表");
         HSSFSheet sheet2 = workbook.createSheet("次日出港航班计划表");
+        int width = 15;
+        sheet.setColumnWidth(0, 256 * width + 184);
+        sheet.setColumnWidth(4, 256 * width + 184);
+        sheet.setColumnWidth(5, 256 * width + 184);
+        sheet.setColumnWidth(7, 256 * width + 184);
+        sheet.setColumnWidth(8, 256 * width + 184);
+        sheet.setColumnWidth(9, 256 * width + 184);
+        sheet.setColumnWidth(10, 256 * width + 184);
+        sheet.setColumnWidth(11, 256 * width + 184);
+        sheet.setColumnWidth(12, 256 * width + 184);
+        sheet.setColumnWidth(13, 256 * width + 184);
+        sheet.setColumnWidth(14, 256 * width + 184);
+        sheet.setColumnWidth(16, 256 * width + 184);
+        sheet.setColumnWidth(17, 256 * width + 184);
+        sheet.setColumnWidth(18, 256 * width + 184);
+        sheet.setColumnWidth(19, 256 * width + 184);
 
         // 创建第一行
         HSSFRow first = sheet.createRow(0);

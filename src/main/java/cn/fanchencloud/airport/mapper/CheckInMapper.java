@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -72,5 +73,21 @@ public interface CheckInMapper {
      */
     @Select("select id, flightInformationId, realNumber, luggageNumber, specialCase, createTime from checkIn where id = #{id} ")
     CheckIn getRecordById(int id);
+
+    /**
+     * 根据航班记录id查询值机信息记录
+     *
+     * @param ids 航班记录id列表
+     * @return 查询结果
+     */
+    @Select({"<script> ",
+            "select id, flightInformationId, realNumber, luggageNumber, specialCase, createTime from checkin where flightInformationId in ",
+            "<foreach collection='ids' item='item' index='index' open='(' close=')' separator=','>",
+            "(#{item})",
+            "</foreach>",
+            "</script> "
+    })
+    @MapKey("flightInformationId")
+    Map<Integer, CheckIn> getRecordByIdList(@Param("ids") List<Integer> ids);
 }
 

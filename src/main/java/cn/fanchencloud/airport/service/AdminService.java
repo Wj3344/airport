@@ -3,6 +3,7 @@ package cn.fanchencloud.airport.service;
 import cn.fanchencloud.airport.entity.Admin;
 import cn.fanchencloud.airport.model.AdminRecord;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -78,4 +79,12 @@ public interface AdminService {
      * @return 用户详情
      */
     Admin getAdminByUsername(String username);
+
+    /**
+     * 请求生成下载数据
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     */
+    void downloadData(Date startTime, Date endTime);
 }

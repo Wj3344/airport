@@ -1,5 +1,7 @@
 package cn.fanchencloud.airport.model;
 
+import cn.fanchencloud.airport.entity.*;
+
 import java.util.Date;
 
 /**
@@ -34,7 +36,7 @@ public class ExcelSheet1 {
     /**
      * 值机特殊情况
      */
-    private Integer checkInSpecialCase;
+    private String checkInSpecialCase;
     /* 值机 end */
 
     /* 清洁队 start */
@@ -112,6 +114,103 @@ public class ExcelSheet1 {
     private String specialCaseDescriptionOfFreight;
     /* 货运 end */
 
+    /**
+     * 设置航班信息
+     *
+     * @param flightInformation 航班信息
+     */
+    public void setFlightInformation(FlightInformation flightInformation) {
+        if (flightInformation == null) {
+            return;
+        }
+        this.date = flightInformation.getTime();
+        this.flightNumber = flightInformation.getFlightNumber();
+    }
+
+    /**
+     * 设置值机信息
+     *
+     * @param checkIn 值机信息
+     */
+    public void setCheckIn(CheckIn checkIn) {
+        if (checkIn == null) {
+            return;
+        }
+        this.numberOfPeople = checkIn.getRealNumber();
+        this.numberOfLuggage = checkIn.getLuggageNumber();
+        this.checkInSpecialCase = checkIn.getSpecialCase();
+    }
+
+    /**
+     * 设置清洁信息
+     *
+     * @param clean 清洁信息
+     */
+    public void setClean(Clean clean) {
+        if (clean == null) {
+            return;
+        }
+        this.cleaningTeamInPlace = clean.getReadTime();
+        this.cleaningTime = clean.getUsedTime();
+        this.cleaningSpecialCaseDescription = clean.getSpecialCase();
+    }
+
+    /**
+     * 设置站坪车辆信息
+     *
+     * @param standCar 站坪车辆
+     */
+    public void setStandCar(StandCar standCar) {
+        if (standCar == null) {
+            return;
+        }
+        this.vipVehicleInPlace = standCar.getVipTime();
+        this.cartInPlace = standCar.getCartTime();
+        this.stationFloorSpecialSituationDescription = standCar.getSpecialCase();
+    }
+
+    /**
+     * 设置行查信息
+     *
+     * @param baggage 行查信息
+     */
+    public void setBaggage(Baggage baggage) {
+        if (baggage == null) {
+            return;
+        }
+        this.baggageCarTime = baggage.getArrivedTime();
+        this.conveyorBeltInPlace = baggage.getReadyTime();
+        this.checkSpecialCaseDescription = baggage.getSpecialCase();
+    }
+
+    /**
+     * 设置综服信息
+     *
+     * @param integratedService 综服信息
+     */
+    public void setIntegratedService(IntegratedService integratedService) {
+        if (integratedService == null) {
+            return;
+        }
+        this.boardingTime = integratedService.getBoardingTime();
+        this.guestTime = integratedService.getReadyTime();
+        this.offCabinTime = integratedService.getCloseTime();
+        this.comprehensiveServiceDescription = integratedService.getSpecialCase();
+    }
+
+    /**
+     * 设置货运信息
+     *
+     * @param freight 货运信息
+     */
+    public void setFreight(Freight freight) {
+        if (freight == null) {
+            return;
+        }
+        this.closeCargoTime = freight.getCloseTime();
+        this.specialCaseDescriptionOfFreight = freight.getSpecialCase();
+    }
+
     public Date getDate() {
         return date;
     }
@@ -144,11 +243,11 @@ public class ExcelSheet1 {
         this.numberOfLuggage = numberOfLuggage;
     }
 
-    public Integer getCheckInSpecialCase() {
+    public String getCheckInSpecialCase() {
         return checkInSpecialCase;
     }
 
-    public void setCheckInSpecialCase(Integer checkInSpecialCase) {
+    public void setCheckInSpecialCase(String checkInSpecialCase) {
         this.checkInSpecialCase = checkInSpecialCase;
     }
 

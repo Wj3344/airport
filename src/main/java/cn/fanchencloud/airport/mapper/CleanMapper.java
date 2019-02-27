@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -55,4 +56,20 @@ public interface CleanMapper {
      */
     @Update("update clean set readTime = #{readTime}, usedTime = #{usedTime}, specialCase = #{specialCase} where id = #{id}")
     int updateRecord(Clean clean);
+
+    /**
+     * 根据航班记录id查询值机信息记录
+     *
+     * @param ids 航班记录id列表
+     * @return 查询结果
+     */
+    @Select({"<script> ",
+            "select id, flightInformationId, readTime, usedTime, specialCase, createTime from clean where flightInformationId in ",
+            "<foreach collection='ids' item='item' index='index' open='(' close=')' separator=','>",
+            "(#{item})",
+            "</foreach>",
+            "</script> "
+    })
+    @MapKey("flightInformationId")
+    Map<Integer, Clean> getRecordByIdList(@Param("ids") List<Integer> ids);
 }

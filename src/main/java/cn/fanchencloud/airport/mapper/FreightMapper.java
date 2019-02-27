@@ -1,13 +1,11 @@
 package cn.fanchencloud.airport.mapper;
 
 import cn.fanchencloud.airport.entity.Freight;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -57,4 +55,20 @@ public interface FreightMapper {
      */
     @Update("update freight set `closeTime` = #{closeTime},`specialCase` = #{specialCase} where id = #{id}")
     int update(Freight freight);
+
+    /**
+     * 根据航班记录id查询值机信息记录
+     *
+     * @param ids 航班记录id列表
+     * @return 查询结果
+     */
+    @Select({"<script> ",
+            "select id, flightInformationId, closeTime, specialCase, createTime from freight where flightInformationId in ",
+            "<foreach collection='ids' item='item' index='index' open='(' close=')' separator=','>",
+            "(#{item})",
+            "</foreach>",
+            "</script> "
+    })
+    @MapKey("flightInformationId")
+    Map<Integer, Freight> getRecordByIdList(@Param("ids") List<Integer> ids);
 }

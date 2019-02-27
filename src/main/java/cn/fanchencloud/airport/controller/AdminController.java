@@ -1,6 +1,7 @@
 package cn.fanchencloud.airport.controller;
 
 import cn.fanchencloud.airport.entity.Admin;
+import cn.fanchencloud.airport.exception.MyAddException;
 import cn.fanchencloud.airport.model.AdminRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.AdminService;
@@ -114,10 +115,15 @@ public class AdminController {
      * @return 数据
      */
     @PostMapping(value = "/downloadData")
-    public void downloadData(Date startTime, Date endTime) {
+    @ResponseBody
+    public JsonResponse downloadData(Date startTime, Date endTime) {
         System.out.println("开始时间：" + startTime);
         System.out.println("结束时间：" + endTime);
-
+        if (startTime.after(endTime)) {
+            throw new MyAddException("开始时间不能比结束时间晚！");
+        }
+        adminService.downloadData(startTime, endTime);
+        return JsonResponse.ok();
     }
 
     @Autowired

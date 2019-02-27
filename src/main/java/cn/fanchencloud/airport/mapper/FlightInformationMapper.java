@@ -4,6 +4,7 @@ import cn.fanchencloud.airport.entity.FlightInformation;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -105,4 +106,15 @@ public interface FlightInformationMapper {
     })
     @MapKey("id")
     Map<Integer, String> queryFlightNumberWithId(@Param("records") List<Integer> records);
+
+    /**
+     * 查询在 startTime 到 endTime 时间段内的航班信息记录
+     *
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     * @return 数据记录
+     */
+    @Select("select id, flightNumber, planeNumber, boardingTime, gatePosition, departureStation, destination, time, special from flightInformation " +
+            "where time between #{startTime} and #{endTime};")
+    List<FlightInformation> queryDataBetweenTime(Date startTime, Date endTime);
 }

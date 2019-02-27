@@ -14,7 +14,7 @@ import java.util.List;
  * User: chen
  * Date: 19-1-10
  * Time: 上午10:22
- * Description:
+ * Description: 重点旅客标记
  *
  * @author chen
  */

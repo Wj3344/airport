@@ -1,13 +1,11 @@
 package cn.fanchencloud.airport.mapper;
 
 import cn.fanchencloud.airport.entity.StandCar;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -61,4 +59,20 @@ public interface StandCarMapper {
             "    specialCase = #{specialCase}\n" +
             "where id = #{id};")
     int update(StandCar standCar);
+
+    /**
+     * 根据航班记录id查询值机信息记录
+     *
+     * @param ids 航班记录id列表
+     * @return 查询结果
+     */
+    @Select({"<script> ",
+            "select id, flightInformationId, vipTime, cartTime, specialCase, createTime from stand where flightInformationId in ",
+            "<foreach collection='ids' item='item' index='index' open='(' close=')' separator=','>",
+            "(#{item})",
+            "</foreach>",
+            "</script> "
+    })
+    @MapKey("flightInformationId")
+    Map<Integer, StandCar> getRecordByIdList(@Param("ids") List<Integer> ids);
 }
