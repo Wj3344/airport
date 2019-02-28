@@ -51,7 +51,8 @@ public interface AdminMapper {
      * @param admin 用户信息
      * @return 是否存在结果
      */
-    boolean isExists(Admin admin);
+    @Select("select count(*) from admin where username = #{username}")
+    int isExists(Admin admin);
 
     /**
      * 查询用户等级

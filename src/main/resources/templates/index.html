@@ -93,7 +93,7 @@
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">用户列表</span>
                     </a>
-                    <a th:if="${admin.identity} == 0" class="J_menuItem"
+                    <a th:if="${admin.identity} != 0" class="J_menuItem"
                        th:href="@{'/admin/modify/' + ${admin.username}}">
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">修改密码</span>
@@ -112,7 +112,7 @@
                         <i class="fa fa-edit"></i>
                         <span class="nav-label">值机信息录入</span>
                     </a>
-                    <a class="J_menuItem" th:href="@{/checkIn/search}">
+                    <a class="J_menuItem" th:href="@{/checkIn/list}">
                         <i class="fa fa-file-text"></i>
                         <span class="nav-label">值机信息查询</span>
                     </a>

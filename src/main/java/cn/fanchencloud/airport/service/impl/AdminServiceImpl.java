@@ -10,18 +10,10 @@ import cn.fanchencloud.airport.utils.BeanUtils;
 import cn.fanchencloud.airport.utils.ExcelUtils;
 import cn.fanchencloud.airport.utils.MD5Utils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -123,7 +115,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public boolean isExists(Admin admin) {
-        return adminMapper.isExists(admin);
+        return adminMapper.isExists(admin) != 0;
     }
 
     @Override
@@ -155,13 +147,13 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void downloadData(Date startTime, Date endTime) {
+    public HSSFWorkbook downloadData(Date startTime, Date endTime) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日");
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
 
         List<FlightInformation> flightInformationList = flightInformationMapper.queryDataBetweenTime(startTime, endTime);
         if (flightInformationList == null || flightInformationList.size() == 0) {
-            return;
+            return null;
         }
         ListSort(flightInformationList);
         List<Integer> ids = flightInformationList.stream().map(FlightInformation::getId).collect(Collectors.toList());
@@ -203,6 +195,10 @@ public class AdminServiceImpl implements AdminService {
         HSSFWorkbook headFile = ExcelUtils.getHeadFile();
         // 获取第一个工作页面
         HSSFSheet sheet1 = headFile.getSheetAt(0);
+        // 设置水平居中的样式
+        HSSFCellStyle style = headFile.createCellStyle();
+        // 设置水平居中
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         // 开始写入数据
         int rowNumber = 2;
         for (ExcelSheet1 excelSheet1 : sheet1List) {
@@ -217,48 +213,60 @@ public class AdminServiceImpl implements AdminService {
 
             // 值机start
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getNumberOfPeople());
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getNumberOfLuggage());
             cell = row.createCell(line++);
             setCellValue(cell, excelSheet1.getCheckInSpecialCase());
 
             // 清洁 start
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getCleaningTeamInPlace(), simpleDateFormat);
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getCleaningTime());
             cell = row.createCell(line++);
             setCellValue(cell, excelSheet1.getCleaningSpecialCaseDescription());
 
             // 站坪车辆 start
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getVipVehicleInPlace(), simpleDateFormat);
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getCartInPlace(), simpleDateFormat);
             cell = row.createCell(line++);
             setCellValue(cell, excelSheet1.getStationFloorSpecialSituationDescription());
 
             // 行查 start
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getBaggageCarTime(), simpleDateFormat);
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getConveyorBeltInPlace(), simpleDateFormat);
             cell = row.createCell(line++);
             setCellValue(cell, excelSheet1.getCheckSpecialCaseDescription());
 
             // 综服 start
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getBoardingTime(), simpleDateFormat);
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getGuestTime(), simpleDateFormat);
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getOffCabinTime(), simpleDateFormat);
             cell = row.createCell(line++);
             setCellValue(cell, excelSheet1.getComprehensiveServiceDescription());
 
             // 货运 start
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet1.getCloseCargoTime(), simpleDateFormat);
             cell = row.createCell(line++);
             setCellValue(cell, excelSheet1.getSpecialCaseDescriptionOfFreight());
@@ -280,48 +288,57 @@ public class AdminServiceImpl implements AdminService {
             setCellValue(cell, excelSheet2.getDate(), sdf);
             // 航班号
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet2.getPlaneNumber());
             // 机号
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet2.getPlaneNumber());
             // 停机位
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet2.getGatePosition());
             // 始发站
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet2.getDepartureStation());
             // 目的地
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet2.getDestination());
             // 登机时间
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet2.getBoardingTime(), simpleDateFormat);
             // 重点旅客
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet2.getKeyPassenger());
             // 特殊航班
             cell = row.createCell(line++);
+            cell.setCellStyle(style);
             setCellValue(cell, excelSheet2.getSpecialFlight());
         }
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File("E:\\testExcel.xls"));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            headFile.write(fos);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(new File("E:\\testExcel.xls"));
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        try {
+//            headFile.write(fos);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        } finally {
+//            if (fos != null) {
+//                try {
+//                    fos.close();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }
+        return headFile;
     }
 
     private static void ListSort(List<FlightInformation> list) {

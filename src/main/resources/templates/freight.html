@@ -93,16 +93,12 @@
         showMeridian: 1,
         minuteStep: 1
     });
-
-    var checkSubmit = function () {
-        var closeTime = $("#closeTime").val();
-        if (closeTime === "") {
-            alert("请填写货仓关闭时间！");
-            return false;
+    // 页面加载完成后触发
+    $(function () {
+        // 检查下拉列表是否为空
+        var selectTest = $("#flightNumber").children();
+        if (selectTest.length === 0) {
+            alert("暂时没有航班信息，或者所有航班都已添加信息，请到货运信息查询列表查看！");
         }
-        // 将时间转换长时间戳
-        var dateTime = new Date(closeTime).getTime();
-        // 将时间戳重新赋值给输入框
-        $("#closeTime").attr("value", dateTime);
-    };
+    });
 </script>

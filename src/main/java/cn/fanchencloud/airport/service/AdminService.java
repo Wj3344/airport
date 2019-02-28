@@ -2,6 +2,7 @@ package cn.fanchencloud.airport.service;
 
 import cn.fanchencloud.airport.entity.Admin;
 import cn.fanchencloud.airport.model.AdminRecord;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import java.util.Date;
 import java.util.List;
@@ -82,9 +83,8 @@ public interface AdminService {
 
     /**
      * 请求生成下载数据
-     *
-     * @param startTime 开始时间
+     *  @param startTime 开始时间
      * @param endTime   结束时间
      */
-    void downloadData(Date startTime, Date endTime);
+    HSSFWorkbook downloadData(Date startTime, Date endTime);
 }

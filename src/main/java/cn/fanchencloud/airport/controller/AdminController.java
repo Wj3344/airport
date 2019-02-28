@@ -5,17 +5,20 @@ import cn.fanchencloud.airport.exception.MyAddException;
 import cn.fanchencloud.airport.model.AdminRecord;
 import cn.fanchencloud.airport.model.JsonResponse;
 import cn.fanchencloud.airport.service.AdminService;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -50,21 +53,21 @@ public class AdminController {
         return "adminList";
     }
 
-//    /**
-//     * 删除一个账号
-//     *
-//     * @param username 用户名
-//     * @return 删除结果
-//     */
-//    @RequiresPermissions("admin:delete")
-//    @GetMapping(value = "/delete/{username}")
-//    public JsonResponse deleteAdmin(@PathVariable("username") String username) {
-//        if (adminService.deleteAdmin(username)) {
-//            return JsonResponse.ok();
-//        } else {
-//            return JsonResponse.errorMsg("删除失败！");
-//        }
-//    }
+    /**
+     * 删除一个账号
+     *
+     * @param username 用户名
+     * @return 删除结果
+     */
+    @RequiresPermissions("admin:delete")
+    @GetMapping(value = "/delete/{username}")
+    public JsonResponse deleteAdmin(@PathVariable("username") String username) {
+        if (adminService.deleteAdmin(username)) {
+            return JsonResponse.ok();
+        } else {
+            return JsonResponse.errorMsg("删除失败！");
+        }
+    }
 
     /**
      * 请求跳转到修改用户信息界面
@@ -73,7 +76,6 @@ public class AdminController {
      * @param username 用户名
      * @return 页面跳转
      */
-    @RequiresPermissions("admin:update")
     @GetMapping("/modify/{username}")
     public String modifyAdmin(Model model, @PathVariable("username") String username) {
         model.addAttribute("username", username);
@@ -86,7 +88,7 @@ public class AdminController {
         Admin user = (Admin) SecurityUtils.getSubject().getPrincipal();
         if (user.getIdentity() != 0) {
             if (!user.getUsername().equals(admin.getUsername())) {
-                return JsonResponse.errorMsg("你没有权限此账号！");
+                return JsonResponse.errorMsg("你没有权限修改此账号！");
             }
         }
         if (adminService.update(admin)) {
@@ -101,7 +103,7 @@ public class AdminController {
      *
      * @return 页面跳转
      */
-//    @RequiresPermissions()
+    @RequiresPermissions("admin:download")
     @GetMapping(value = "/downloadData")
     public String downloadData() {
         return "downloadData";
@@ -112,18 +114,33 @@ public class AdminController {
      *
      * @param startTime 开始时间
      * @param endTime   结束时间
-     * @return 数据
      */
+    @RequiresPermissions("admin:download")
     @PostMapping(value = "/downloadData")
     @ResponseBody
-    public JsonResponse downloadData(Date startTime, Date endTime) {
+    public void downloadData(Date startTime, Date endTime, HttpServletResponse response) {
         System.out.println("开始时间：" + startTime);
         System.out.println("结束时间：" + endTime);
         if (startTime.after(endTime)) {
             throw new MyAddException("开始时间不能比结束时间晚！");
         }
-        adminService.downloadData(startTime, endTime);
-        return JsonResponse.ok();
+        HSSFWorkbook workbook = adminService.downloadData(startTime, endTime);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日");
+        String fileName = simpleDateFormat.format(startTime) + " ~ " + simpleDateFormat.format(endTime) + "记录表.xls";
+        // 设置内容类型为下载类型
+        response.setContentType("application/x-download");
+        //设置请求头 和 文件下载名称
+        try {
+            response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        // 创建输入输出流
+        try (OutputStream outputStream = response.getOutputStream();) {
+            workbook.write(outputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Autowired

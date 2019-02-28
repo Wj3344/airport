@@ -109,6 +109,12 @@ public class LoginController {
     @RequiresPermissions("admin:add")
     @ResponseBody
     public JsonResponse signUp(Admin admin) {
+        if (admin == null) {
+            return JsonResponse.errorMsg("注册信息不能为空！");
+        }
+        if (adminService.isExists(admin)) {
+            return JsonResponse.errorMsg("该用户名已被注册！");
+        }
         String password = MD5Utils.encrypt(admin.getUsername(), admin.getPassword());
         admin.setPassword(password);
         if (adminService.add(admin) != 0) {

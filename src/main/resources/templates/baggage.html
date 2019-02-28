@@ -87,6 +87,16 @@
 </div>
 </body>
 <script th:src="@{/js/httpRequest.js}" type="text/javascript"></script>
+<script type="text/javascript" th:inline="javascript">
+    // 页面加载完成后触发
+    $(function () {
+        // 检查下拉列表是否为空
+        var selectTest = $("#flightNumber").children();
+        if (selectTest.length === 0) {
+            alert("暂时没有航班信息，或者所有航班都已添加信息，请到行查信息查询列表查看！");
+        }
+    });
+</script>
 </html>
 <script type="text/javascript">
     <!-- 时间组件初始化 -->

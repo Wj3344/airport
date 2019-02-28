@@ -44,14 +44,17 @@
             </thead>
             <tbody>
             <tr th:each="adminRecord,iterStat:${adminRecordList}">
-            <td th:text="${iterStat.count}">序号</td>
-            <td th:text="${adminRecord.username}">用户名</td>
-            <td th:text="${adminRecord.describe}">账号等级</td>
-            <td>
-                <a class="btn btn-info btn-sm" th:href="@{'/admin/modify/' + ${adminRecord.id}}"
-                   role="button">修改</a>
-            </td>
-        </tr>
+                <td th:text="${iterStat.count}">序号</td>
+                <td th:text="${adminRecord.username}">用户名</td>
+                <td th:text="${adminRecord.describe}">账号等级</td>
+                <td>
+                    <a class="btn btn-info btn-sm" th:href="@{'/admin/modify/' + ${adminRecord.username}}"
+                       role="button">修改</a>
+                    <a th:if="${adminRecord.identity} != 0" class="btn btn-danger btn-sm"
+                       th:href="@{'/admin/delete/' + ${adminRecord.username}}"
+                       role="button">删除</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
