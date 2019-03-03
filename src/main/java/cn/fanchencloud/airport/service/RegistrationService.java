@@ -6,6 +6,7 @@ import cn.fanchencloud.airport.entity.SpecialFlight;
 import cn.fanchencloud.airport.model.Registration;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -26,11 +27,25 @@ public interface RegistrationService {
     List<PassengerTag> findAllPassengerTag();
 
     /**
+     * 获取所有的重点旅客标记标签
+     *
+     * @return 重点旅客标记标签映射
+     */
+    Map<Integer, PassengerTag> findAllPassengerTagMap();
+
+    /**
      * 获取所有的特殊航班标记标签
      *
      * @return 所有的特殊航班标记标签列表
      */
     List<SpecialFlight> findAllSpecialFlightTags();
+
+    /**
+     * 获取所有的特殊航班标记标签
+     *
+     * @return 所有的特殊航班标记标签列表映射
+     */
+    Map<Integer, SpecialFlight> findAllSpecialFlightTagMap();
 
     /**
      * 保存上传的航班信息记录

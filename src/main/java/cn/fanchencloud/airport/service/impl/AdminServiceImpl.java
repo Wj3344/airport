@@ -85,6 +85,16 @@ public class AdminServiceImpl implements AdminService {
      */
     private FlightInformationSpecialFlightMapper flightInformationSpecialFlightMapper;
 
+    /**
+     * 重点旅客标签
+     */
+    private PassengerTagMapper passengerTagMapper;
+
+    /**
+     * 特殊航班标签
+     */
+    private SpecialFlightMapper specialFlightMapper;
+
     @Override
     public Admin login(Admin admin) {
         boolean flag = this.isExists(admin);
@@ -169,8 +179,11 @@ public class AdminServiceImpl implements AdminService {
         Map<Integer, IntegratedService> integratedServiceMap = integratedServiceMapper.getRecordByIdList(ids);
         // 查询货运信息
         Map<Integer, Freight> freightMap = freightMapper.getRecordByIdList(ids);
+        Map<Integer, PassengerTag> passengerTagMap = passengerTagMapper.findAllMap();
+        Map<Integer, SpecialFlight> specialFlightMap = specialFlightMapper.findAllMap();
         List<ExcelSheet1> sheet1List = new ArrayList<>(flightInformationList.size());
         List<ExcelSheet2> sheet2List = new ArrayList<>(flightInformationList.size());
+        StringBuilder sb = new StringBuilder();
         for (FlightInformation flightInformation : flightInformationList) {
             ExcelSheet1 sheet1 = new ExcelSheet1();
             sheet1.setFlightInformation(flightInformation);
@@ -185,10 +198,22 @@ public class AdminServiceImpl implements AdminService {
             sheet2.setFlightInformation(flightInformation);
             // 重点旅客标记
             List<FlightInformationPassengerTag> byFlightId = flightInformationPassengerTagMapper.findByFlightId(flightInformation.getId());
-            sheet2.setKeyPassenger(StringUtils.join(byFlightId.stream().map(FlightInformationPassengerTag::getTagId).toArray(), ","));
+            // 清空StringBuilder
+            sb.delete(0, sb.length());
+            for (FlightInformationPassengerTag index : byFlightId) {
+                sb.append(passengerTagMap.get(index.getTagId()).getDescribe());
+                sb.append(" ");
+            }
+            sheet2.setKeyPassenger(sb.toString());
             // 特殊航班标记
             List<FlightInformationSpecialFlight> flightId = flightInformationSpecialFlightMapper.findByFlightId(flightInformation.getId());
-            sheet2.setSpecialFlight(StringUtils.join(flightId.stream().map(FlightInformationSpecialFlight::getSpecialFlight).toArray(), ","));
+            // 清空StringBuilder
+            sb.delete(0, sb.length());
+            for (FlightInformationSpecialFlight index : flightId) {
+                sb.append(specialFlightMap.get(index.getSpecialFlight()).getDescribe());
+                sb.append(" ");
+            }
+            sheet2.setSpecialFlight(sb.toString());
             sheet2List.add(sheet2);
         }
 
@@ -422,5 +447,15 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     public void setFreightMapper(FreightMapper freightMapper) {
         this.freightMapper = freightMapper;
+    }
+
+    @Autowired
+    public void setPassengerTagMapper(PassengerTagMapper passengerTagMapper) {
+        this.passengerTagMapper = passengerTagMapper;
+    }
+
+    @Autowired
+    public void setSpecialFlightMapper(SpecialFlightMapper specialFlightMapper) {
+        this.specialFlightMapper = specialFlightMapper;
     }
 }

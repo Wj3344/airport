@@ -16,7 +16,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -105,13 +107,30 @@ public class RegistrationController {
         // 查询该条信息
         Registration registration = registrationService.getRegistrationById(id);
         model.addAttribute("registration", registration);
+        return "registrationModify";
+    }
+
+    @RequiresPermissions("registration:modify")
+    @GetMapping(value = "/view/{id}")
+    public String viewMessage(@PathVariable("id") int id, Model model) {
+        // 查询该条信息
+        Registration registration = registrationService.getRegistrationById(id);
+        model.addAttribute("registration", registration);
         // 获取所有的重点旅客标签
-        List<PassengerTag> passengerTags = registrationService.findAllPassengerTag();
+        Map<Integer, PassengerTag> passengerTagMap = registrationService.findAllPassengerTagMap();
+        List<PassengerTag> passengerTags = new ArrayList<>(registration.getPassengerTags().size());
+        for (Integer number : registration.getPassengerTags()) {
+            passengerTags.add(passengerTagMap.get(number));
+        }
         // 获取所有的特殊航班标签
-        List<SpecialFlight> specialFlightTags = registrationService.findAllSpecialFlightTags();
+        Map<Integer, SpecialFlight> flightTagMap = registrationService.findAllSpecialFlightTagMap();
+        List<SpecialFlight> specialFlightTags = new ArrayList<>(registration.getPassengerTags().size());
+        for (Integer number : registration.getSpecialTags()) {
+            specialFlightTags.add(flightTagMap.get(number));
+        }
         model.addAttribute("passengerTags", passengerTags);
         model.addAttribute("specialFlightTags", specialFlightTags);
-        return "registrationModify";
+        return "registrationView";
     }
 
     /**

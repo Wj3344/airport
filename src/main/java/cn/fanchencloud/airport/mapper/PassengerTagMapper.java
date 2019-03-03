@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -86,4 +87,12 @@ public interface PassengerTagMapper {
     @Update("update passengerTag set `describe` = #{describe} where id = #{id}")
     int updatePassengerTag(PassengerTag tag);
 
+    /**
+     * 获取所有的特殊航班标记标签
+     *
+     * @return 所有的特殊航班标记标签列表
+     */
+    @Select("select `id`, `describe`from `passengerTag`")
+    @MapKey("id")
+    Map<Integer, PassengerTag> findAllMap();
 }

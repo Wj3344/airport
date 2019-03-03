@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by handsome programmer.
@@ -61,8 +62,18 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
     @Override
+    public Map<Integer, PassengerTag> findAllPassengerTagMap() {
+        return passengerTagMapper.findAllMap();
+    }
+
+    @Override
     public List<SpecialFlight> findAllSpecialFlightTags() {
         return specialFlightMapper.findAll();
+    }
+
+    @Override
+    public Map<Integer, SpecialFlight> findAllSpecialFlightTagMap() {
+        return specialFlightMapper.findAllMap();
     }
 
     /**
